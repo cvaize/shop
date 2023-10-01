@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\LocaleLanguage>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Language>
  */
 class LocaleLanguageFactory extends Factory
 {

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\LocaleLanguage;
+use App\Models\Language;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class LocaleLanguagePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, LocaleLanguage $localeLanguage): bool
+    public function view(User $user, Language $localeLanguage): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class LocaleLanguagePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, LocaleLanguage $localeLanguage): bool
+    public function update(User $user, Language $localeLanguage): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class LocaleLanguagePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, LocaleLanguage $localeLanguage): bool
+    public function delete(User $user, Language $localeLanguage): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class LocaleLanguagePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, LocaleLanguage $localeLanguage): bool
+    public function restore(User $user, Language $localeLanguage): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class LocaleLanguagePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, LocaleLanguage $localeLanguage): bool
+    public function forceDelete(User $user, Language $localeLanguage): bool
     {
         //
     }

@@ -22,8 +22,8 @@ return new class extends Migration
             $table->unsignedSmallInteger('status')->default(1);
             $table->datetimes();
 
-            $table->index(['parent_type', 'parent_id', 'relationship_type', 'relationship_id']);
-            $table->unique(['parent_type', 'parent_id', 'type_id', 'relationship_type', 'relationship_id']);
+            $table->index(['parent_type', 'parent_id', 'relationship_type', 'relationship_id'], 'relationships_index_1');
+            $table->unique(['parent_type', 'parent_id', 'type_id', 'relationship_type', 'relationship_id'], 'relationships_unique_1');
 
             $table->foreign('type_id')->references('id')->on('types')
                 ->cascadeOnUpdate()->restrictOnDelete();

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('cwday', 1)->nullable();
             $table->string('chour', 2)->nullable();
             $table->unsignedInteger('language_id')->nullable();
+            $table->unsignedInteger('currency_id')->nullable();
             $table->text('comment')->nullable();
 
             $table->datetimes();

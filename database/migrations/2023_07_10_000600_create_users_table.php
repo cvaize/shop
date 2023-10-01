@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('language_id')->nullable();
+            $table->unsignedInteger('currency_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -25,6 +26,8 @@ return new class extends Migration
             $table->datetimes();
 
             $table->foreign('language_id')->references('id')->on('languages')
+                ->cascadeOnUpdate()->nullOnDelete();
+            $table->foreign('currency_id')->references('id')->on('currencies')
                 ->cascadeOnUpdate()->nullOnDelete();
         });
     }
