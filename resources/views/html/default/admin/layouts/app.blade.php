@@ -8,40 +8,91 @@
     {!! seo($seo??null) !!}
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/combine/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css,npm/bootstrap-utilities@4.1.3/bootstrap-utilities.css,npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        :root:not([data-theme=dark]), [data-theme=light] {
+            /*--primary: #0d6efd;*/
+            /*--secondary: #6c757d;*/
+            /*--success: #198754;*/
+            /*--danger: #dc3545;*/
+            /*--warning: #ffc107;*/
+            /*--info: #0dcaf0;*/
+            /*--light: #f8f9fa;*/
+            /*--dark: #212529;*/
+            /*--del-color: var(--danger);*/
+            --font-size: 16px;
+            --spacing: 0.5rem;
+            --form-element-spacing-vertical: 0.25rem;
+            --form-element-spacing-horizontal: 0.3rem;
+        }
+
+        input:not([type=checkbox],[type=radio],[type=range],[type=file])[type=search] {
+            background-position: center left 0.5rem;
+        }
+
+        [role=button], button, input[type=button], input[type=reset], input[type=submit] {
+            white-space: nowrap;
+        }
+
+        /*tfoot td input, tfoot th input, thead td input, thead th input, tfoot td select, tfoot th select, thead td select, thead th select{*/
+        /*    --border-width: 1px;*/
+        /*    width: calc( 100% + 10px);*/
+        /*}*/
+        table input:not([type=checkbox],[type=radio]), table textarea, table select, table details[role=list] summary + ul, table li[role=list] > ul,
+        table [role="button"]{
+            --border-width: 1px;
+        }
+
+        table select {
+            width: fit-content;
+        }
+
+        table input:not([type=checkbox],[type=radio]), table textarea {
+            min-width: 80px;
+        }
+
+        table select, table input, table label, table label, table input:not([type=checkbox],[type=radio]), table textarea {
+            margin: 0;
+        }
+
+        select:not([multiple],[size]) {
+            background-position: center right 0.25rem;
+        }
+
+        input:not([type=checkbox],[type=radio],[type=range],[type=file]):is([type=date],[type=datetime-local],[type=month],[type=time],[type=week]) {
+            --icon-position: 0.25rem;
+        }
+
+        :not(thead,tfoot) > * > td {
+            --font-size: 1em;
+        }
+    </style>
 </head>
 <body>
-<nav class="container">
-    <ul>
-        <li><a href="{{ route('admin.index') }}"><strong>Shop</strong></a></li>
-    </ul>
-    <ul class="d-none">
-        <li>
-            <a href="#" style="
-            position: relative;
-            width: calc(1rem + var(--nav-link-spacing-horizontal) * 2);
-    height: calc(1rem + var(--nav-link-spacing-vertical) * 2);">
-                @include('Html::admin.components.icons.burger', ['style'=>'position: absolute; left: calc(50% - 0.5rem); top: calc(50% - 0.5rem); height: 1rem; color: var(--color);'])
-            </a>
-        </li>
-    </ul>
-    <ul>
-        <li><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-        <li><a href="{{ route('admin.users.index') }}">Users</a></li>
-        <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
-        <li><a href="{{ route('admin.products.index') }}">Products</a></li>
-        <li>
-            <details role="list" dir="rtl">
-                <summary aria-haspopup="listbox" role="link">Dropdown</summary>
-                <ul role="listbox">
-                    <li><a>Action</a></li>
-                    <li><a>Another action</a></li>
-                    <li><a>Something else here</a></li>
-                </ul>
-            </details>
-        </li>
-    </ul>
-</nav>
-<main class="container">
+<main class="container" style="padding-top: 0;">
+    <nav class="container">
+        <ul>
+            <li><a href="{{ route('admin.index') }}"><strong>Shop</strong></a></li>
+        </ul>
+        <ul class="d-none d-sm-flex">
+            <li><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
+            <li><a href="{{ route('admin.users.index') }}">Users</a></li>
+            <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
+            <li><a href="{{ route('admin.products.index') }}">Products</a></li>
+        </ul>
+        <ul class="d-flex d-sm-non2e">
+            <li>
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="link">Menu</summary>
+                    <ul role="listbox">
+                        <li><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
+                        <li><a href="{{ route('admin.users.index') }}">Users</a></li>
+                        <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
+                        <li><a href="{{ route('admin.products.index') }}">Products</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
     @hasSection('content')
         @yield('content')
     @endif
