@@ -22,7 +22,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->unsignedSmallInteger('status')->default(1);
             $table->boolean('superuser')->default(false);
-            $table->boolean('banned')->default(false);
             $table->datetimes();
 
             $table->foreign('language_id')->references('id')->on('languages')

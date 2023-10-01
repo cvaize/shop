@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/admin');
-Route::redirect('/admin', '/admin/dashboard')->name('admin');
-
-Route::get('/admin/dashboard', \App\Http\Controllers\Admin\DashboardController::class)
-    ->name('admin.dashboard');
+Route::prefix('/admin')->name('admin.')->group(function (){
+    Route::redirect('/', '/admin/dashboard')->name('index');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard.index');
+    Route::resource('users', UsersController::class);
+    Route::resource('roles', UsersController::class);
+    Route::resource('products', UsersController::class);
+});
