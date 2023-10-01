@@ -17,10 +17,11 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
+        $users = User::paginate();
         $seo = new SEOData(
             title: 'Users'
         );
-        $data = compact('seo');
+        $data = compact('seo', 'users');
 
         if($request->isJson()) return $data;
         return view("Html::admin.pages.users", $data);

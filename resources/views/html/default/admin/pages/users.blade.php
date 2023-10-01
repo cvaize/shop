@@ -1,3 +1,6 @@
+<?php
+/** @var \App\Models\User $user */
+?>
 @extends('Html::admin.layouts.app', ['seo' => $seo ?? null])
 {{--id--}}
 {{--language_id--}}
@@ -127,54 +130,33 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <label for="selected-1">
-                        <input type="checkbox" id="selected-1" name="selected[]" value="1">
-                    </label>
-                </td>
-                <th scope="row"><a href="#">1</a></th>
-                <td><a href="#">Включён</a></td>
-                <td><a href="#">Орлов Дмитрий Алесандрович</a></td>
-                <td><a href="#">cvaize@gmail.com</a></td>
-                <td><a href="#">11.11.1111 11:11:11</a></td>
-                <td><a href="#">Рубли</a></td>
-                <td><a href="#">Русский</a></td>
-                <td>
-                    <div class="d-flex">
-                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.copy')
-                        </a>
-                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="selected-2">
-                        <input type="checkbox" id="selected-2" name="selected[]" value="2">
-                    </label>
-                </td>
-                <th scope="row"><a href="#">2</a></th>
-                <td><a href="#">Включён</a></td>
-                <td><a href="#">Орлов Дмитрий Алесандрович</a></td>
-                <td><a href="#">cvaize@gmail.com</a></td>
-                <td><a href="#">11.11.1111 11:11:11</a></td>
-                <td><a href="#">Рубли</a></td>
-                <td><a href="#">Русский</a></td>
-                <td>
-                    <div class="d-flex">
-                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.copy')
-                        </a>
-                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
-                        </a>
-                    </div>
-                </td>
-            </tr>
+            @foreach($users as $user)
+                <?php $editUrl = route('admin.users.edit', compact('user')); ?>
+                <tr>
+                    <td>
+                        <label for="selected-1">
+                            <input type="checkbox" id="selected-1" name="selected[]" value="1">
+                        </label>
+                    </td>
+                    <th scope="row"><a href="{{ $editUrl }}">{{ $user->getKey() }}</a></th>
+                    <td><a href="{{ $editUrl }}">{{ $user->status }}</a></td>
+                    <td><a href="{{ $editUrl }}">{{ $user->name }}</a></td>
+                    <td><a href="{{ $editUrl }}">{{ $user->email }}</a></td>
+                    <td><a href="{{ $editUrl }}">{{ $user->email_verified_at }}</a></td>
+                    <td><a href="{{ $editUrl }}">{{ $user->currency_id ?? '-' }}</a></td>
+                    <td><a href="{{ $editUrl }}">{{ $user->language_id ?? '-' }}</a></td>
+                    <td>
+                        <div class="d-flex">
+                            <a href="#" role="button" class="ml-1" style="font-size: inherit;">
+                                @include('Html::admin.components.icons.copy')
+                            </a>
+                            <a href="#" role="button" class="ml-1" style="font-size: inherit;">
+                                @include('Html::admin.components.icons.trash')
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </figure>
@@ -185,9 +167,19 @@
             <li><a href="#" role="button">3</a></li>
             <li><a href="#" role="button">4</a></li>
         </ul>
-        <details role="list" style="font-size: inherit;" class="mb-0 ml-3">
+        <details role="list" style="font-size: inherit;" class="mb-0 mr-2">
             <summary aria-haspopup="listbox" role="button" class="align-items-center">
-                20
+                Текущая страница #{{ $users->currentPage() }}
+            </summary>
+            <ul role="listbox">
+                @foreach(range(1, $users->lastPage()) as $page)
+                    <li><a href="{{ route('admin.users.index', compact('page')) }}">Страница #{{ $page }}</a></li>
+                @endforeach
+            </ul>
+        </details>
+        <details role="list" style="font-size: inherit;" class="mb-0 ml-2">
+            <summary aria-haspopup="listbox" role="button" class="align-items-center">
+                20 шт. на странице
             </summary>
             <ul role="listbox">
                 <li><a href="{{ route('admin.users.index') }}">20</a></li>
