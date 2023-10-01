@@ -160,23 +160,14 @@
             </tbody>
         </table>
     </figure>
-    <nav class="d-flex justify-content-center align-items-center mb-3">
+    {{ $users->links('Html::admin.components.pagination') }}
+    <nav class="d-none justify-content-center align-items-center mb-3">
         <ul style="--nav-element-spacing-horizontal: 0.1rem;">
             <li><a href="#" role="button">1</a></li>
             <li><a href="#" role="button">2</a></li>
             <li><a href="#" role="button">3</a></li>
             <li><a href="#" role="button">4</a></li>
         </ul>
-        <details role="list" style="font-size: inherit;" class="mb-0 mr-2">
-            <summary aria-haspopup="listbox" role="button" class="align-items-center">
-                Текущая страница #{{ $users->currentPage() }}
-            </summary>
-            <ul role="listbox">
-                @foreach(range(1, $users->lastPage()) as $page)
-                    <li><a href="{{ route('admin.users.index', compact('page')) }}">Страница #{{ $page }}</a></li>
-                @endforeach
-            </ul>
-        </details>
         <details role="list" style="font-size: inherit;" class="mb-0 ml-2">
             <summary aria-haspopup="listbox" role="button" class="align-items-center">
                 20 шт. на странице
