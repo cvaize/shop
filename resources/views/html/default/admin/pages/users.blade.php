@@ -39,7 +39,16 @@
                 <th scope="col">Дата верификации</th>
                 <th scope="col">Валюта</th>
                 <th scope="col">Язык</th>
-                <th scope="col"></th>
+                <th scope="col">
+                    <div class="d-flex">
+                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
+                            @include('Html::admin.components.icons.plus')
+                        </a>
+                        <a href="#" role="button" class="ml-1" style="font-size: inherit;">
+                            @include('Html::admin.components.icons.columns')
+                        </a>
+                    </div>
+                </th>
             </tr>
             </thead>
             <thead>
@@ -108,10 +117,10 @@
                 <th scope="col">
                     <div class="d-flex">
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
+                            @include('Html::admin.components.icons.search')
                         </a>
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
+                            @include('Html::admin.components.icons.close')
                         </a>
                     </div>
                 </th>
@@ -134,7 +143,7 @@
                 <td>
                     <div class="d-flex">
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
+                            @include('Html::admin.components.icons.copy')
                         </a>
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
                             @include('Html::admin.components.icons.trash')
@@ -158,7 +167,7 @@
                 <td>
                     <div class="d-flex">
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
-                            @include('Html::admin.components.icons.trash')
+                            @include('Html::admin.components.icons.copy')
                         </a>
                         <a href="#" role="button" class="ml-1" style="font-size: inherit;">
                             @include('Html::admin.components.icons.trash')
@@ -169,26 +178,25 @@
             </tbody>
         </table>
     </figure>
-    <nav class="d-flex justify-content-center mb-3">
+    <nav class="d-flex justify-content-center align-items-center mb-3">
         <ul style="--nav-element-spacing-horizontal: 0.1rem;">
             <li><a href="#" role="button">1</a></li>
             <li><a href="#" role="button">2</a></li>
             <li><a href="#" role="button">3</a></li>
             <li><a href="#" role="button">4</a></li>
         </ul>
+        <details role="list" style="font-size: inherit;" class="mb-0 ml-3">
+            <summary aria-haspopup="listbox" role="button" class="align-items-center">
+                20
+            </summary>
+            <ul role="listbox">
+                <li><a href="{{ route('admin.users.index') }}">20</a></li>
+                <li><a href="{{ route('admin.users.index') }}">50</a></li>
+                <li><a href="{{ route('admin.users.index') }}">100</a></li>
+                <li><a href="{{ route('admin.users.index') }}">200</a></li>
+                <li><a href="{{ route('admin.users.index') }}">500</a></li>
+                <li><a href="{{ route('admin.users.index') }}">1000</a></li>
+            </ul>
+        </details>
     </nav>
-    <div class="d-flex justify-content-center">
-        <div>
-            <label for="per_page">
-                <select id="per_page" name="per_page">
-                    <option value="20" selected>20</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="500">500</option>
-                    <option value="1000">1000</option>
-                </select>
-            </label>
-        </div>
-    </div>
 @endsection

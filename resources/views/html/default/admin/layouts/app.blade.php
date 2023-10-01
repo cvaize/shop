@@ -79,7 +79,7 @@
             <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
             <li><a href="{{ route('admin.products.index') }}">Products</a></li>
         </ul>
-        <ul class="d-flex d-sm-non2e">
+        <ul class="d-flex d-sm-none">
             <li>
                 <details role="list" dir="rtl">
                     <summary aria-haspopup="listbox" role="link">Menu</summary>
