@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/admin/default/dashboard');
 
-Route::get('/admin/default/dashboard', \App\Http\Controllers\Html\Admin\Default\DashboardController::class);
+Route::get('/admin/{template}/dashboard', \App\Http\Controllers\DashboardController::class)
+    ->name('admin.dashboard');
