@@ -11,7 +11,7 @@
 <body>
 <nav class="container">
     <ul>
-        <li><a href="{{ route('html.admin.default') }}"><strong>Shop</strong></a></li>
+        <li><a href="{{ route('admin') }}"><strong>Shop</strong></a></li>
     </ul>
     <ul>
         <li><a href="#">Link</a></li>

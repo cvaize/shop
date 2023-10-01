@@ -1,4 +1,4 @@
-@extends('html.admin.default.layouts.app', ['seo' => $seo ?? null])
+@extends('Html::admin.layouts.app', ['seo' => $seo ?? null])
 
 @section('content')
     <div class="grid">
