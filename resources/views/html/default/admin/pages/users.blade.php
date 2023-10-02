@@ -1,7 +1,12 @@
 <?php
 /** @var \App\Models\User $user */
+/** @var array $frd */
+/** @var array $seo */
+$seo = $seo ?? null;
+$sort = $sort ?? null;
+$sortField = $sortField ?? null;
 ?>
-@extends('Html::admin.layouts.app', ['seo' => $seo ?? null])
+@extends('Html::admin.layouts.app', compact('seo'))
 
 @section('content')
     <ul class="breadcrumb">
@@ -12,7 +17,7 @@
             <a href="{{ route('admin.users.index') }}">Пользователи</a>
         </li>
     </ul>
-    <div>
+    <form action="{{ route('admin.users.index') }}" method="GET">
         <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
             <table class="table table-striped table-hover table-column-small">
                 <thead class="bg-primary">
@@ -33,25 +38,30 @@
                         </div>
                     </th>
                     <th>
-                        <button class="btn btn-link-white">
+                        <button class="btn btn-link-white text-bold" name="{{ $sortField }}" value="{{ $sort === 'id'?'-id': 'id' }}">
                             ID
-                            <i class="icon icon-downward"></i>
+                            @if($sort === 'id')
+                                <i class="icon icon-downward"></i>
+                            @endif
+                            @if($sort === '-id')
+                                <i class="icon icon-upward"></i>
+                            @endif
                         </button>
                     </th>
                     <th>
-                        <button class="btn btn-link-white">
-                            Статус
-                            <i class="icon icon-upward"></i>
-                        </button>
+                        Статус
                     </th>
-                    <th>Название</th>
+                    <th>
+                        Название
+                    </th>
                     <th>Email</th>
                     <th>Верификация</th>
                     <th>Валюта</th>
                     <th>Язык</th>
                     <th class="text-right">
                         <button class="btn btn-action btn-link-white"><i class="icon icon-plus"></i></button>
-                        <a href="#modal-show-columns" class="btn btn-action btn-link-white ml-1"><i class="icon icon-apps"></i></a>
+                        <a href="#modal-show-columns" class="btn btn-action btn-link-white ml-1"><i
+                                class="icon icon-apps"></i></a>
                     </th>
                 </tr>
                 </thead>
@@ -65,8 +75,10 @@
                         </div>
                     </th>
                     <th style="max-width: 100px;">
+                        <input type="hidden" value="==" name="filter[id][operator]">
                         <label class="form-group d-block">
-                            <input class="form-input" type="text" placeholder="ID">
+                            <input class="form-input" type="text" placeholder="ID"
+                            name="filter[id][value]" value="{{ $frd['filter']['id']['value'] ?? '' }}">
                         </label>
                     </th>
                     <th>
@@ -106,8 +118,9 @@
                         </label>
                     </th>
                     <th class="text-right">
-                        <button class="btn btn-action btn-link"><i class="icon icon-search"></i></button>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-action btn-link ml-1"><i class="icon icon-cross"></i></a>
+                        <button class="btn btn-action btn-link" type="submit"><i class="icon icon-search"></i></button>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-action btn-link ml-1"><i
+                                class="icon icon-cross"></i></a>
                     </th>
                 </tr>
                 </thead>
@@ -124,7 +137,8 @@
                             </div>
                         </td>
                         <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->getKey() }}</a></td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ __('user.status.' . $user->status) }}</a></td>
+                        <td><a href="{{ $editUrl }}" class="link-reset">{{ __('user.status.' . $user->status) }}</a>
+                        </td>
                         <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->name }}</a></td>
                         <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->email }}</a></td>
                         <td><a href="{{ $editUrl }}"
@@ -134,7 +148,8 @@
                         <td>
                             <div class="text-right">
                                 <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
-                                <a href="#modal-delete-{{ $user->getKey() }}" class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
+                                <a href="#modal-delete-{{ $user->getKey() }}"
+                                   class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
                             </div>
                             <div class="modal modal-sm" id="modal-delete-{{ $user->getKey() }}">
                                 <a href="#close" class="modal-overlay" aria-label="Close"></a>
@@ -144,7 +159,8 @@
                                         <div class="modal-title h5">Подтвердите удаление</div>
                                     </div>
                                     <div class="modal-body">
-                                        Подтверждаете удаление <br><b>#{{ $user->getKey() }} - {{ $user->email }}</b> ({{ $user->name }})?
+                                        Подтверждаете удаление <br><b>#{{ $user->getKey() }} - {{ $user->email }}</b>
+                                        ({{ $user->name }})?
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-error float-left">Удалить</button>
@@ -244,5 +260,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 @endsection

@@ -17,11 +17,16 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::paginate(2);
+        $frd = $request->all();
+
+        $sortField = 'sort';
+        $sort = $frd[$sortField] ?? '-id';
+        $users = User::orderBy(str_replace('-', '', $sort), str_contains($sort, '-') ? 'DESC' : 'ASC')
+        ->paginate(10);
         $seo = new SEOData(
             title: 'Users'
         );
-        $data = compact('seo', 'users');
+        $data = compact('frd', 'sort', 'sortField', 'seo', 'users');
 
         if($request->isJson()) return $data;
         return view("Html::admin.pages.users", $data);
