@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::paginate();
+        $users = User::paginate(2);
         $seo = new SEOData(
             title: 'Users'
         );
