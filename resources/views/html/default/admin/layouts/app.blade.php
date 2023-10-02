@@ -28,7 +28,7 @@
             min-height: 1rem;
         }
 
-        .btn-link-error, .btn-link-error:focus, .btn-link-error:hover {
+        .btn-link-error, .btn-link-error:focus, .btn-link-error:hover, .btn-link-error:visited {
             background: 0 0;
             border-color: transparent;
             color: #e85600;
@@ -36,7 +36,8 @@
         .btn-link-error:focus{
             box-shadow: 0 0 0 0.1rem rgba(217, 80, 0, 0.2);
         }
-        .btn-link-white, .btn-link-white:focus, .btn-link-white:hover {
+
+        .btn-link-white, .btn-link-white:focus, .btn-link-white:hover, .btn-link-white:visited {
             background: 0 0;
             border-color: transparent;
             color: #fff;
@@ -44,7 +45,7 @@
         .btn-link-white:focus{
             box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.2);
         }
-        .link-reset, .link-reset.active, .link-reset:active, .link-reset:focus, .link-reset:hover{
+        .link-reset, .link-reset.active, .link-reset:active, .link-reset:focus, .link-reset:hover, .link-reset:visited{
             color: inherit;
         }
         a.text-error:focus{

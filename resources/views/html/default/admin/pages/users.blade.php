@@ -24,7 +24,7 @@
                         <!-- menu component -->
                         <ul class="menu">
                             <li class="menu-item">
-                                <a href="#" class="text-error" style="white-space: nowrap">
+                                <a href="#modal-delete-selected" class="text-error" style="white-space: nowrap">
                                     Удалить выбранное
                                 </a>
                             </li>
@@ -106,7 +106,7 @@
                 </th>
                 <th class="text-right">
                     <button class="btn btn-action btn-link"><i class="icon icon-search"></i></button>
-                    <button class="btn btn-action btn-link ml-1"><i class="icon icon-cross"></i></button>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-action btn-link ml-1"><i class="icon icon-cross"></i></a>
                 </th>
             </tr>
             </thead>
@@ -130,13 +130,52 @@
                            class="link-reset">{{ $user->email_verified_at ?? 'Не верифицирован' }}</a></td>
                     <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->currency?->label ?? '-' }}</a></td>
                     <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->language?->label ?? '-' }}</a></td>
-                    <td class="text-right">
-                        <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
-                        <button class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></button>
+                    <td>
+                        <div class="text-right">
+                            <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
+                            <a href="#modal-delete-{{ $user->getKey() }}" class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
+                        </div>
+                        <div class="modal" id="modal-delete-{{ $user->getKey() }}">
+                            <a href="#close" class="modal-overlay" aria-label="Close"></a>
+                            <div class="modal-container">
+                                <div class="modal-header">
+                                    <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                                    <div class="modal-title h5">Подтвердите удаление</div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="content">
+                                        Подтверждаете удаление <br><b>#{{ $user->getKey() }} - {{ $user->email }}</b> ({{ $user->name }})?
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#" class="btn float-left">Закрыть</a>
+                                    <button class="btn btn-error">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+
+        <div class="modal modal-sm" id="modal-delete-selected">
+            <a href="#close" class="modal-overlay" aria-label="Close"></a>
+            <div class="modal-container">
+                <div class="modal-header">
+                    <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                    <div class="modal-title h5">Подтвердите удаление</div>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        Подтверждаете удаление одного или нескольких элементов?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn float-left">Закрыть</a>
+                    <button class="btn btn-error">Удалить</button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
