@@ -4,7 +4,8 @@
 /** @var array $seo */
 $seo = $seo ?? null;
 $sort = $sort ?? null;
-$sortField = $sortField ?? null;
+$sortField = $sortField ?? 'sort';
+$filterField = $filterField ?? 'filter';
 ?>
 @extends('Html::admin.layouts.app', compact('seo'))
 
@@ -18,13 +19,14 @@ $sortField = $sortField ?? null;
         </li>
     </ul>
     <form action="{{ route('admin.users.index') }}" method="GET">
+        <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
         <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
             <table class="table table-striped table-hover table-column-small">
                 <thead class="bg-primary">
                 <tr>
                     <th>
                         <div class="dropdown" style="margin: -0.3rem -0.2rem;">
-                            <button class="btn btn-action btn-link-white dropdown-toggle" tabindex="0">
+                            <button class="btn btn-action btn-link-white dropdown-toggle" tabindex="0" type="button">
                                 <i class="icon icon-more-vert"></i>
                             </button>
                             <!-- menu component -->
@@ -38,7 +40,8 @@ $sortField = $sortField ?? null;
                         </div>
                     </th>
                     <th>
-                        <button class="btn btn-link-white text-bold" name="{{ $sortField }}" value="{{ $sort === 'id'?'-id': 'id' }}">
+                        <button class="btn btn-link-white text-bold" name="{{ $sortField }}"
+                                value="{{ $sort === 'id'?'-id': 'id' }}">
                             ID
                             @if($sort === 'id')
                                 <i class="icon icon-downward"></i>
@@ -75,10 +78,11 @@ $sortField = $sortField ?? null;
                         </div>
                     </th>
                     <th style="max-width: 100px;">
-                        <input type="hidden" value="==" name="filter[id][operator]">
+                        <input type="hidden" value="=" name="{{ $filterField }}[id][operator]">
                         <label class="form-group d-block">
                             <input class="form-input" type="text" placeholder="ID"
-                            name="filter[id][value]" value="{{ $frd['filter']['id']['value'] ?? '' }}">
+                                   name="{{ $filterField }}[id][value]"
+                                   value="{{ $frd[$filterField]['id']['value'] ?? '' }}">
                         </label>
                     </th>
                     <th>
