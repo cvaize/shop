@@ -6,93 +6,82 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {!! seo($seo??null) !!}
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/combine/npm/bootstrap-v4-grid-only@1.0.0/dist/bootstrap-grid.min.css,npm/bootstrap-utilities@4.1.3/bootstrap-utilities.css,npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="{{ asset('/css/spectre.css') }}">
     <style>
-        :root:not([data-theme=dark]), [data-theme=light] {
-            /*--primary: #0d6efd;*/
-            /*--secondary: #6c757d;*/
-            /*--success: #198754;*/
-            /*--danger: #dc3545;*/
-            /*--warning: #ffc107;*/
-            /*--info: #0dcaf0;*/
-            /*--light: #f8f9fa;*/
-            /*--dark: #212529;*/
-            /*--del-color: var(--danger);*/
-            --font-size: 16px;
-            --spacing: 0.5rem;
-            --form-element-spacing-vertical: 0.25rem;
-            --form-element-spacing-horizontal: 0.3rem;
+        .icon {
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
 
-        input:not([type=checkbox],[type=radio],[type=range],[type=file])[type=search] {
-            background-position: center left 0.5rem;
+        .table-column-small tr th:first-child,
+        .table-column-small tr td:first-child {
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            word-break: break-all;
         }
 
-        [role=button], button, input[type=button], input[type=reset], input[type=submit] {
-            white-space: nowrap;
-        }
-
-        /*tfoot td input, tfoot th input, thead td input, thead th input, tfoot td select, tfoot th select, thead td select, thead th select{*/
-        /*    --border-width: 1px;*/
-        /*    width: calc( 100% + 10px);*/
-        /*}*/
-        table input:not([type=checkbox],[type=radio]), table textarea, table select, table details[role=list] summary + ul, table li[role=list] > ul,
-        table [role="button"]{
-            --border-width: 1px;
-        }
-
-        table select {
-            width: fit-content;
-        }
-
-        table input:not([type=checkbox],[type=radio]), table textarea {
-            min-width: 80px;
-        }
-
-        table select, table input, table label, table label, table input:not([type=checkbox],[type=radio]), table textarea {
+        .table-checkbox {
             margin: 0;
+            padding: 0;
+            min-height: 1rem;
         }
 
-        select:not([multiple],[size]) {
-            background-position: center right 0.25rem;
+        .btn-link-error, .btn-link-error:focus, .btn-link-error:hover {
+            background: 0 0;
+            border-color: transparent;
+            color: #e85600;
         }
-
-        input:not([type=checkbox],[type=radio],[type=range],[type=file]):is([type=date],[type=datetime-local],[type=month],[type=time],[type=week]) {
-            --icon-position: 0.25rem;
+        .btn-link-error:focus{
+            box-shadow: 0 0 0 0.1rem rgba(217, 80, 0, 0.2);
         }
-
-        :not(thead,tfoot) > * > td {
-            --font-size: 1em;
+        .btn-link-white, .btn-link-white:focus, .btn-link-white:hover {
+            background: 0 0;
+            border-color: transparent;
+            color: #fff;
+        }
+        .btn-link-white:focus{
+            box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.2);
+        }
+        .link-reset, .link-reset.active, .link-reset:active, .link-reset:focus, .link-reset:hover{
+            color: inherit;
+        }
+        a.text-error:focus{
+            box-shadow: 0 0 0 0.1rem rgba(217, 80, 0, 0.2);
+        }
+        .menu .menu-item>a.text-error:focus, .menu .menu-item>a.text-error:hover{
+            background: #f8f0ed;
         }
     </style>
 </head>
 <body>
-<main class="container" style="padding-top: 0;">
-    <nav class="container">
-        <ul>
-            <li><a href="{{ route('admin.index') }}"><strong>Shop</strong></a></li>
-        </ul>
-        <ul class="d-none d-sm-flex">
-            <li><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-            <li><a href="{{ route('admin.users.index') }}">Users</a></li>
-            <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
-            <li><a href="{{ route('admin.products.index') }}">Products</a></li>
-        </ul>
-        <ul class="d-flex d-sm-none">
-            <li>
-                <details role="list" dir="rtl">
-                    <summary aria-haspopup="listbox" role="link">Menu</summary>
-                    <ul role="listbox">
-                        <li><a href="{{ route('admin.dashboard.index') }}">Dashboard</a></li>
-                        <li><a href="{{ route('admin.users.index') }}">Users</a></li>
-                        <li><a href="{{ route('admin.roles.index') }}">Roles</a></li>
-                        <li><a href="{{ route('admin.products.index') }}">Products</a></li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
-    </nav>
+<main class="container" style="max-width: 1440px">
+    <header class="navbar pt-2">
+        <section class="navbar-section">
+            <a href="{{ route('admin.index') }}" class="navbar-brand mr-2"
+               style="color: currentColor;font-weight: 700;border-color: transparent;">
+                Админка магазина
+            </a>
+            <a href="{{ route('admin.users.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Пользователи
+            </a>
+            <a href="{{ route('admin.roles.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Роли
+            </a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Товары
+            </a>
+        </section>
+        <section class="navbar-section">
+            <div class="input-group input-inline">
+                <input class="form-input" type="text" placeholder="Глобальный поиск">
+                <button class="btn btn-primary input-group-btn">
+                    <i class="icon icon-search"></i>
+                </button>
+            </div>
+        </section>
+    </header>
     @hasSection('content')
         @yield('content')
     @endif
