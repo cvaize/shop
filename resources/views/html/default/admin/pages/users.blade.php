@@ -81,6 +81,7 @@ foreach ($users as $user) {
         $selectedType = 'selected';
     }
 }
+// TODO: Сделать выбор строк и всех строк со сбросом.
 ?>
 @extends('Html::admin.layouts.app', compact('seo', 'frd'))
 
