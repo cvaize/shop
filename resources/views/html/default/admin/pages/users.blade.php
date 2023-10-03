@@ -7,41 +7,43 @@ $seo = $seo ?? [];
 $frd = $frd ?? [];
 $clearFrd = [];
 
+$pageField = $pageField ?? 'page';
 $fieldsField = $fieldsField ?? 'fields';
 $sortField = $sortField ?? 'sort';
 $filterField = $filterField ?? 'filter';
 $selectedField = $selectedField ?? 'selected';
-$paramsFields = [$fieldsField, $sortField, $filterField, $selectedField];
+$tokenField = $tokenField ?? '_token';
+$paramsFields = [$fieldsField, $sortField, $filterField, $selectedField, $pageField, $tokenField];
 
 foreach ($frd as $name => $value) if (!in_array($name, $paramsFields)) $clearFrd[$name] = $value;
 
 $fields = [
     'id'                => [
-        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'ID', 'class' => 'table-column-id',
+        'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID', 'class' => 'table-column-id',
     ],
     'status'            => [
-        'operator' => '=', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', '1' => 'Активные']
+        'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', '1' => 'Активные']
     ],
     'name'              => [
-        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'Название',
+        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Название',
     ],
     'email'             => [
-        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'Email',
+        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Email',
     ],
     'email_verified_at' => [
-        'operator' => '=', 'active' => true, 'type' => 'date', 'label' => 'Верификация',
+        'operator' => '==', 'active' => true, 'type' => 'date', 'label' => 'Верификация',
     ],
     'currency_id'       => [
-        'operator' => '=', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => ['' => 'Все', '1' => 'Рубль']
+        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => ['' => 'Все', '1' => 'Рубль']
     ],
     'language_id'       => [
-        'operator' => '=', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => ['' => 'Все', '1' => 'Русский']
+        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => ['' => 'Все', '1' => 'Русский']
     ],
 ];
 
 $fieldsArray = isset($frd[$fieldsField]) && is_array($frd[$fieldsField]) ? $frd[$fieldsField] : ['id', 'status', 'name', 'email'];
-foreach ($fields as $name => &$field) {
-    $field['active'] = in_array($name, $fieldsArray);
+foreach ($fields as $name => $field) {
+    $fields[$name]['active'] = in_array($name, $fieldsArray);
 }
 
 $selectedIndex = array_flip($frd[$selectedField] ?? []);
@@ -50,6 +52,8 @@ $selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
 
 $frdForSort = [...$frd];
 unset($frdForSort[$sortField]);
+unset($frdForSort[$selectedField]);
+unset($frdForSort[$pageField]);
 $symbolForSort = count($frdForSort) > 0 ? '&' : '?';
 $urlForSort = route('admin.users.index', $frdForSort) . $symbolForSort . $sortField . '=';
 
@@ -58,6 +62,9 @@ unset($frdForSelected[$selectedField]);
 $symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
 $urlForSelectedEmpty = route('admin.users.index', $frdForSelected);
 $urlForSelectedAll = $urlForSelectedEmpty;
+
+$createUrl = route('admin.users.create');
+$deleteSelectedUrl = route('admin.users.destroySelected');
 
 $rows = [];
 foreach ($users as $key => $user) {
@@ -70,6 +77,8 @@ foreach ($users as $key => $user) {
     $row = [
         'id'       => $id,
         '_link'    => route('admin.users.edit', compact('user')),
+        '_delete'  => route('admin.users.destroy', compact('user')),
+        '_copy'    => route('admin.users.copy', compact('user')),
         '_checked' => isset($selectedIndex[$id]),
         '_label'   => '#' . $id . ' - ' . $user->email . ($user->name ? "($user->name)" : ''),
     ];
@@ -113,6 +122,7 @@ foreach ($users as $key => $user) {
         </li>
     </ul>
     <form action="{{ route('admin.users.index') }}" method="GET">
+        @csrf
         <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
         @if(count($clearFrd) > 0)
             <!-- Параметры других форм -->
@@ -121,6 +131,7 @@ foreach ($users as $key => $user) {
                 <input type="hidden" name="{{ $param[0]??null }}" value="{{ $param[1]??null }}">
             @endforeach
         @endif
+        <input type="hidden" name="page" value="1">
         <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
             <table class="table table-striped table-hover table-column-small">
                 <thead class="bg-primary">
@@ -157,7 +168,7 @@ foreach ($users as $key => $user) {
                         @endif
                     @endforeach
                     <th class="text-right">
-                        <button class="btn btn-action btn-link-white"><i class="icon icon-plus"></i></button>
+                        <a href="{{ $createUrl }}" class="btn btn-action btn-link-white"><i class="icon icon-plus"></i></a>
                         <a href="#modal-show-columns" class="btn btn-action btn-link-white ml-1"><i
                                 class="icon icon-apps"></i></a>
                     </th>
@@ -232,7 +243,8 @@ foreach ($users as $key => $user) {
                         @endforeach
                         <td>
                             <div class="text-right">
-                                <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
+                                <a href="{{ $row['_copy'] }}" class="btn btn-action btn-link"><i
+                                        class="icon icon-copy"></i></a>
                                 <a href="#modal-delete-{{ $row['id'] }}"
                                    class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
                             </div>
@@ -247,7 +259,10 @@ foreach ($users as $key => $user) {
                                         Подтверждаете удаление <br><b>{{ $row['_label'] }}</b>?
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-error float-left">Удалить</button>
+                                        <button class="btn btn-error float-left" type="submit"
+                                                formaction="{{ $row['_delete'] }}" formmethod="post">
+                                            Удалить
+                                        </button>
                                         <a href="#" class="btn">Закрыть</a>
                                     </div>
                                 </div>
@@ -273,7 +288,10 @@ foreach ($users as $key => $user) {
                     Подтверждаете удаление одного или нескольких элементов?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-error float-left">Удалить</button>
+                    <button class="btn btn-error float-left" type="submit" formaction="{{ $deleteSelectedUrl }}"
+                            formmethod="post">
+                        Удалить
+                    </button>
                     <a href="#" class="btn">Закрыть</a>
                 </div>
             </div>

@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAddressRequest;
-use App\Http\Requests\UpdateAddressRequest;
-use App\Models\Address;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
@@ -27,7 +25,7 @@ class UsersController extends Controller
         );
         $data = compact('frd', 'seo', 'users');
 
-        if($request->isJson()) return $data;
+        if ($request->isJson()) return $data;
         return view("Html::admin.pages.users", $data);
     }
 
@@ -42,7 +40,7 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAddressRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -50,7 +48,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Address $address)
+    public function show(User $user)
     {
         //
     }
@@ -58,7 +56,15 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Address $address)
+    public function edit(User $user)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function copy(User $user)
     {
         //
     }
@@ -66,7 +72,7 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAddressRequest $request, Address $address)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -74,8 +80,20 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Address $address)
+    public function destroy(User $user): RedirectResponse
     {
-        //
+        $user->delete();
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroySelected(Request $request): RedirectResponse
+    {
+        $ids = $request->input('selected', []);
+        User::whereIn('id', $ids)->delete();
+
+        return redirect()->back();
     }
 }

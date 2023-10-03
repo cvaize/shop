@@ -19,7 +19,24 @@ class CommonFilter extends ModelFilter
         foreach ($filters as $name => $param) {
             $operator = $param['operator'] ?? '==';
             $value = trim($param['value'] ?? '');
-            if ($value !== '') $this->where($name, $operator, $value);
+            if ($value !== '') {
+                $whereOperator = '';
+                switch ($operator) {
+                    case '==':
+                        $whereOperator = '=';
+                        break;
+                    case '~=':
+                        $whereOperator = 'like';
+                        $value = '%' . $value . '%';
+                        break;
+                    case '!=':
+                        $whereOperator = '!=';
+                        break;
+                }
+                if ($whereOperator !== '') {
+                    $this->where($name, $whereOperator, $value);
+                }
+            }
         }
 
         return $this;
@@ -28,7 +45,7 @@ class CommonFilter extends ModelFilter
     public function sort($value)
     {
         $value = trim($value);
-        if($value !== ''){
+        if ($value !== '') {
             $this->orderBy(str_replace('-', '', $value), str_contains($value, '-') ? 'DESC' : 'ASC');
         }
 
