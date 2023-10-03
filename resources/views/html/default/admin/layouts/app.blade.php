@@ -5,7 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; default-src https://mc.yandex.ru https://yastatic.net 'self' 'nonce-{{ base64_encode( random_bytes( 16 ) ) }}'; style-src 'unsafe-inline' 'self'; img-src https://mc.yandex.ru 'self' blob: data:; frame-src https://www.youtube.com https://player.vimeo.com blob: https://mc.yandex.ru; connect-src 'self' https://mc.yandex.ru; child-src blob: https://mc.yandex.ru;">
+    <meta http-equiv="Content-Security-Policy"
+          content="base-uri 'self'; default-src https://mc.yandex.ru https://yastatic.net 'self' 'nonce-{{ base64_encode( random_bytes( 16 ) ) }}'; style-src 'unsafe-inline' 'self'; img-src https://mc.yandex.ru 'self' blob: data:; frame-src https://www.youtube.com https://player.vimeo.com blob: https://mc.yandex.ru; connect-src 'self' https://mc.yandex.ru; child-src blob: https://mc.yandex.ru;">
     {!! seo($seo??null) !!}
     <link rel="stylesheet" href="{{ asset('/css/spectre.css') }}">
     <style>
@@ -34,7 +35,8 @@
             border-color: transparent;
             color: #e85600;
         }
-        .btn-link-error:focus{
+
+        .btn-link-error:focus {
             box-shadow: 0 0 0 0.1rem rgba(217, 80, 0, 0.2);
         }
 
@@ -43,17 +45,25 @@
             border-color: transparent;
             color: #fff;
         }
-        .btn-link-white:focus{
+
+        .btn-link-white:focus {
             box-shadow: 0 0 0 0.1rem rgba(255, 255, 255, 0.2);
         }
-        .link-reset, .link-reset.active, .link-reset:active, .link-reset:focus, .link-reset:hover, .link-reset:visited{
+
+        .link-reset, .link-reset.active, .link-reset:active, .link-reset:focus, .link-reset:hover, .link-reset:visited {
             color: inherit;
         }
-        a.text-error:focus{
+
+        a.text-error:focus {
             box-shadow: 0 0 0 0.1rem rgba(217, 80, 0, 0.2);
         }
-        .menu .menu-item>a.text-error:focus, .menu .menu-item>a.text-error:hover{
+
+        .menu .menu-item > a.text-error:focus, .menu .menu-item > a.text-error:hover {
             background: #f8f0ed;
+        }
+
+        .table-column-id {
+            max-width: 100px;
         }
     </style>
 </head>
@@ -77,7 +87,7 @@
         </section>
         <section class="navbar-section">
             <div class="input-group input-inline">
-                <input class="form-input" type="text" placeholder="Глобальный поиск">
+                <input class="form-input" type="text" placeholder="Глобальный поиск" value="{{ $frd['search'] ?? '' }}">
                 <button class="btn btn-primary input-group-btn">
                     <i class="icon icon-search"></i>
                 </button>

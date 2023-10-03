@@ -1,13 +1,83 @@
 <?php
 /** @var \App\Models\User $user */
+/** @var \Illuminate\Database\Eloquent\Collection $users */
 /** @var array $frd */
 /** @var array $seo */
 $seo = $seo ?? [];
 $frd = $frd ?? [];
+$clearFrd = [];
+
+$fieldsField = $fieldsField ?? 'fields';
 $sortField = $sortField ?? 'sort';
 $filterField = $filterField ?? 'filter';
+$selectedField = $selectedField ?? 'selected';
+$paramsFields = [$fieldsField, $sortField, $filterField, $selectedField];
+
+foreach ($frd as $name => $value) if (!in_array($name, $paramsFields)) $clearFrd[$name] = $value;
+
+$fields = [
+    'id'                => [
+        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'ID', 'class' => 'table-column-id',
+    ],
+    'status'            => [
+        'operator' => '=', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', '1' => 'Активные']
+    ],
+    'name'              => [
+        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'Название',
+    ],
+    'email'             => [
+        'operator' => '=', 'active' => true, 'type' => 'text', 'label' => 'Email',
+    ],
+    'email_verified_at' => [
+        'operator' => '=', 'active' => true, 'type' => 'date', 'label' => 'Верификация',
+    ],
+    'currency_id'       => [
+        'operator' => '=', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => ['' => 'Все', '1' => 'Рубль']
+    ],
+    'language_id'       => [
+        'operator' => '=', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => ['' => 'Все', '1' => 'Русский']
+    ],
+];
+
+$fieldsArray = isset($frd[$fieldsField]) && is_array($frd[$fieldsField]) ? $frd[$fieldsField] : ['id', 'status', 'name', 'email'];
+foreach ($fields as $name => &$field) {
+    $field['active'] = in_array($name, $fieldsArray);
+}
+
+$selectedIndex = array_flip($frd[$selectedField] ?? []);
+// notSelected, selected, allSelected
+$selectedType = '';
+
+$rows = [];
+foreach ($users as $user) {
+    $row = [
+        '_link' => route('admin.users.edit', compact('user')),
+    ];
+    if ($fields['id']['active']) {
+        $row['id'] = $user->getKey();
+    }
+    if ($fields['status']['active']) {
+        $row['status'] = __('user.status.' . $user->status);
+    }
+    if ($fields['name']['active']) {
+        $row['name'] = $user->name;
+    }
+    if ($fields['email']['active']) {
+        $row['email'] = $user->email;
+    }
+    if ($fields['email_verified_at']['active']) {
+        $row['email_verified_at'] = $user->email_verified_at ?? 'Не верифицирован';
+    }
+    if ($fields['currency_id']['active']) {
+        $row['currency_id'] = $user->currency?->label ?? '-';
+    }
+    if ($fields['language_id']['active']) {
+        $row['language_id'] = $user->language?->label ?? '-';
+    }
+    $rows[] = $row;
+}
 ?>
-@extends('Html::admin.layouts.app', compact('seo'))
+@extends('Html::admin.layouts.app', compact('seo', 'frd'))
 
 @section('content')
     <ul class="breadcrumb">
@@ -18,8 +88,15 @@ $filterField = $filterField ?? 'filter';
             <a href="{{ route('admin.users.index') }}">Пользователи</a>
         </li>
     </ul>
-    <form action="{{ route('admin.users.index') }}" method="GET">
+    <form action="{{ route('admin.users.index', $clearFrd) }}" method="GET">
         <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
+        @if(count($clearFrd) > 0)
+            <!-- Параметры других форм -->
+            @foreach(explode('&', \Arr::query($clearFrd)) as $param)
+                    <?php $param = explode('=', $param); ?>
+                <input type="hidden" name="{{ $param[0]??null }}" value="{{ $param[1]??null }}">
+            @endforeach
+        @endif
         <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
             <table class="table table-striped table-hover table-column-small">
                 <thead class="bg-primary">
@@ -39,28 +116,22 @@ $filterField = $filterField ?? 'filter';
                             </ul>
                         </div>
                     </th>
-                    <th>
-                        <button class="btn btn-link-white text-bold" name="{{ $sortField }}"
-                                value="{{ $frd[$sortField] === 'id'?'-id': 'id' }}">
-                            ID
-                            @if($frd[$sortField] === 'id')
-                                <i class="icon icon-downward"></i>
-                            @endif
-                            @if($frd[$sortField] === '-id')
-                                <i class="icon icon-upward"></i>
-                            @endif
-                        </button>
-                    </th>
-                    <th>
-                        Статус
-                    </th>
-                    <th>
-                        Название
-                    </th>
-                    <th>Email</th>
-                    <th>Верификация</th>
-                    <th>Валюта</th>
-                    <th>Язык</th>
+                    @foreach($fields as $name=>$field)
+                        @if($field['active'])
+                            <th>
+                                <a href="{{ route('admin.users.index', [...$frd, $sortField => $frd[$sortField] === $name?'-'.$name: $name]) }}"
+                                   class="btn btn-link-white text-bold">
+                                    {{ $field['label'] }}
+                                    @if($frd[$sortField] === $name)
+                                        <i class="icon icon-downward"></i>
+                                    @endif
+                                    @if($frd[$sortField] === '-'.$name)
+                                        <i class="icon icon-upward"></i>
+                                    @endif
+                                </a>
+                            </th>
+                        @endif
+                    @endforeach
                     <th class="text-right">
                         <button class="btn btn-action btn-link-white"><i class="icon icon-plus"></i></button>
                         <a href="#modal-show-columns" class="btn btn-action btn-link-white ml-1"><i
@@ -77,78 +148,56 @@ $filterField = $filterField ?? 'filter';
                             </label>
                         </div>
                     </th>
-                    <th style="max-width: 100px;">
-                        <input type="hidden" value="=" name="{{ $filterField }}[id][operator]">
-                        <label class="form-group d-block">
-                            <input class="form-input" type="text" placeholder="ID"
-                                   name="{{ $filterField }}[id][value]"
-                                   value="{{ $frd[$filterField]['id']['value'] ?? '' }}">
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <select class="form-select">
-                                <option>Все</option>
-                            </select>
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <input class="form-input" type="text" placeholder="Название">
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <input class="form-input" type="email" placeholder="Email">
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <input class="form-input" type="date" placeholder="Верификация">
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <select class="form-select">
-                                <option>Валюта</option>
-                            </select>
-                        </label>
-                    </th>
-                    <th>
-                        <label class="form-group d-block">
-                            <select class="form-select">
-                                <option>Язык</option>
-                            </select>
-                        </label>
-                    </th>
+                    @foreach($fields as $name=>$field)
+                        @if($field['active'])
+                            <th {!! isset($field['class']) ? 'class="'.$field['class'].'"' : '' !!} >
+                                <input type="hidden" value="{{ $field['operator'] ?? '=' }}"
+                                       name="{{ $filterField }}[{{ $name }}][operator]">
+                                <label class="form-group d-block">
+                                    @if(in_array($field['type'], ['text', 'date']))
+                                        <input class="form-input" type="{{ $field['type'] }}"
+                                               placeholder="{{ $field['label'] }}"
+                                               name="{{ $filterField }}[{{ $name }}][value]"
+                                               value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
+                                    @elseif($field['type'] === 'select')
+                                        <select class="form-select" name="{{ $filterField }}[{{ $name }}][value]"
+                                                value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
+                                            @foreach($field['options'] as $optionValue=>$optionLabel)
+                                                <option
+                                                    value="{{ $optionValue }}" @selected(($frd[$filterField][$name]['value'] ?? '') == $optionValue)>
+                                                    {{ $optionLabel }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                </label>
+                            </th>
+                        @endif
+                    @endforeach
                     <th class="text-right">
                         <button class="btn btn-action btn-link" type="submit"><i class="icon icon-search"></i></button>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-action btn-link ml-1"><i
+                        <a href="{{ route('admin.users.index', $clearFrd) }}" class="btn btn-action btn-link ml-1"><i
                                 class="icon icon-cross"></i></a>
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($users as $user)
-                        <?php $editUrl = route('admin.users.edit', compact('user')); ?>
+                @foreach($rows as $row)
                     <tr>
                         <td>
                             <div class="form-group">
                                 <label class="table-checkbox form-checkbox form-inline">
-                                    <input type="checkbox" name="table[selected][]" value="{{ $user->getKey() }}"><i
+                                    <input type="checkbox" name="{{ $selectedField }}[]"
+                                           value="{{ $user->getKey() }}" @checked(isset($selectedIndex[$user->getKey()]))><i
                                         class="form-icon"></i>
                                 </label>
                             </div>
                         </td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->getKey() }}</a></td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ __('user.status.' . $user->status) }}</a>
-                        </td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->name }}</a></td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->email }}</a></td>
-                        <td><a href="{{ $editUrl }}"
-                               class="link-reset">{{ $user->email_verified_at ?? 'Не верифицирован' }}</a></td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->currency?->label ?? '-' }}</a></td>
-                        <td><a href="{{ $editUrl }}" class="link-reset">{{ $user->language?->label ?? '-' }}</a></td>
+                        @foreach($fields as $name=>$field)
+                            @if($field['active'])
+                                <td><a href="{{ $row['_link'] }}" class="link-reset">{{ $row[$name]??'' }}</a></td>
+                            @endif
+                        @endforeach
                         <td>
                             <div class="text-right">
                                 <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
@@ -179,7 +228,7 @@ $filterField = $filterField ?? 'filter';
             </table>
         </div>
         <div class="flex-centered">
-            {{ $users->onEachSide(2)->links('Html::admin.components.pagination') }}
+            {{ $users->appends($frd)->onEachSide(2)->links('Html::admin.components.pagination') }}
         </div>
 
         <div class="modal modal-sm" id="modal-delete-selected">
@@ -208,58 +257,19 @@ $filterField = $filterField ?? 'filter';
                 </div>
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> ID
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Статус
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Название
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Email
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Верификация
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Валюта
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-checkbox">
-                            <input type="checkbox">
-                            <i class="form-icon"></i> Язык
-                        </label>
-                    </div>
+                    @foreach($fields as $name=>$field)
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="{{ $fieldsField }}[]"
+                                       value="{{ $name }}" @checked($field['active'])>
+                                <i class="form-icon"></i> {{ $field['label'] }}
+                            </label>
+                        </div>
+                    @endforeach
 
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary float-left">Применить</button>
+                    <button class="btn btn-primary float-left" type="submit">Применить</button>
                     <a href="#" class="btn">Закрыть</a>
                 </div>
             </div>
