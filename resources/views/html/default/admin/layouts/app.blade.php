@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; default-src https://mc.yandex.ru https://yastatic.net 'self' 'nonce-{{ base64_encode( random_bytes( 16 ) ) }}'; style-src 'unsafe-inline' 'self'; img-src https://mc.yandex.ru 'self' blob: data:; frame-src https://www.youtube.com https://player.vimeo.com blob: https://mc.yandex.ru; connect-src 'self' https://mc.yandex.ru; child-src blob: https://mc.yandex.ru;">
     {!! seo($seo??null) !!}
     <link rel="stylesheet" href="{{ asset('/css/spectre.css') }}">
     <style>

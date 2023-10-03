@@ -2,8 +2,8 @@
 /** @var \App\Models\User $user */
 /** @var array $frd */
 /** @var array $seo */
-$seo = $seo ?? null;
-$sort = $sort ?? null;
+$seo = $seo ?? [];
+$frd = $frd ?? [];
 $sortField = $sortField ?? 'sort';
 $filterField = $filterField ?? 'filter';
 ?>
@@ -41,12 +41,12 @@ $filterField = $filterField ?? 'filter';
                     </th>
                     <th>
                         <button class="btn btn-link-white text-bold" name="{{ $sortField }}"
-                                value="{{ $sort === 'id'?'-id': 'id' }}">
+                                value="{{ $frd[$sortField] === 'id'?'-id': 'id' }}">
                             ID
-                            @if($sort === 'id')
+                            @if($frd[$sortField] === 'id')
                                 <i class="icon icon-downward"></i>
                             @endif
-                            @if($sort === '-id')
+                            @if($frd[$sortField] === '-id')
                                 <i class="icon icon-upward"></i>
                             @endif
                         </button>
