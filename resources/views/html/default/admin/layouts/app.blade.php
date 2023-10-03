@@ -65,6 +65,36 @@
         .table-column-id {
             max-width: 100px;
         }
+        .form-checkbox.indeterminate > .form-icon, .form-checkbox.checked > .form-icon, .form-radio.checked > .form-icon, .form-switch.checked > .form-icon{
+            background: #5755d9;
+            border-color: #5755d9;
+        }
+        .form-checkbox.indeterminate > .form-icon:before {
+            background: #fff;
+            content: "";
+            height: 2px;
+            left: 50%;
+            margin-left: -5px;
+            margin-top: -1px;
+            position: absolute;
+            top: 50%;
+            width: 10px;
+        }
+        .form-checkbox.checked > .form-icon:before {
+            background-clip: padding-box;
+            border: 0.1rem solid #fff;
+            border-left-width: 0;
+            border-top-width: 0;
+            content: "";
+            height: 9px;
+            left: 50%;
+            margin-left: -3px;
+            margin-top: -6px;
+            position: absolute;
+            top: 50%;
+            transform: rotate(45deg);
+            width: 6px;
+        }
     </style>
 </head>
 <body>

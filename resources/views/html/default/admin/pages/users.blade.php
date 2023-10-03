@@ -48,13 +48,30 @@ $selectedIndex = array_flip($frd[$selectedField] ?? []);
 // notSelected, selected, allSelected
 $selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
 
+$frdForSort = [...$frd];
+unset($frdForSort[$sortField]);
+$symbolForSort = count($frdForSort) > 0 ? '&' : '?';
+$urlForSort = route('admin.users.index', $frdForSort) . $symbolForSort . $sortField . '=';
+
+$frdForSelected = [...$frd];
+unset($frdForSelected[$selectedField]);
+$symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
+$urlForSelectedEmpty = route('admin.users.index', $frdForSelected);
+$urlForSelectedAll = $urlForSelectedEmpty;
+
 $rows = [];
-foreach ($users as $user) {
+foreach ($users as $key => $user) {
+    $id = $user->getKey();
+    if ($key === 0) {
+        $urlForSelectedAll .= $symbolForSelected . $selectedField . '[]=' . $id;
+    } else {
+        $urlForSelectedAll .= '&' . $selectedField . '[]=' . $id;
+    }
     $row = [
-        'id' => $user->getKey(),
-        '_link' => route('admin.users.edit', compact('user')),
-        '_checked' => isset($selectedIndex[$user->getKey()]),
-        '_label' => '#' . $user->getKey() . ' - ' . $user->email . ($user->name ? "($user->name)" : ''),
+        'id'       => $id,
+        '_link'    => route('admin.users.edit', compact('user')),
+        '_checked' => isset($selectedIndex[$id]),
+        '_label'   => '#' . $id . ' - ' . $user->email . ($user->name ? "($user->name)" : ''),
     ];
 
     if ($fields['status']['active']) {
@@ -81,7 +98,8 @@ foreach ($users as $user) {
         $selectedType = 'selected';
     }
 }
-// TODO: Сделать выбор строк и всех строк со сбросом.
+
+
 ?>
 @extends('Html::admin.layouts.app', compact('seo', 'frd'))
 
@@ -94,7 +112,7 @@ foreach ($users as $user) {
             <a href="{{ route('admin.users.index') }}">Пользователи</a>
         </li>
     </ul>
-    <form action="{{ route('admin.users.index', $clearFrd) }}" method="GET">
+    <form action="{{ route('admin.users.index') }}" method="GET">
         <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
         @if(count($clearFrd) > 0)
             <!-- Параметры других форм -->
@@ -125,7 +143,7 @@ foreach ($users as $user) {
                     @foreach($fields as $name=>$field)
                         @if($field['active'])
                             <th>
-                                <a href="{{ route('admin.users.index', [...$frd, $sortField => $frd[$sortField] === $name?'-'.$name: $name]) }}"
+                                <a href="{{ $urlForSort . ($frd[$sortField] === $name?'-'.$name: $name) }}"
                                    class="btn btn-link-white text-bold">
                                     {{ $field['label'] }}
                                     @if($frd[$sortField] === $name)
@@ -149,9 +167,17 @@ foreach ($users as $user) {
                 <tr>
                     <th>
                         <div class="form-group">
-                            <label class="table-checkbox form-checkbox form-inline">
-                                <input type="checkbox" checked=""><i class="form-icon"></i>
-                            </label>
+                            @if($selectedType === 'notSelected' || $selectedType === 'selected')
+                                <a href="{{ $urlForSelectedAll }}"
+                                   class="table-checkbox form-checkbox form-inline" style="box-shadow: none">
+                                    <i class="form-icon"></i>
+                                </a>
+                            @elseif($selectedType === 'allSelected')
+                                <a href="{{ $urlForSelectedEmpty }}"
+                                   class="table-checkbox form-checkbox form-inline checked" style="box-shadow: none">
+                                    <i class="form-icon"></i>
+                                </a>
+                            @endif
                         </div>
                     </th>
                     @foreach($fields as $name=>$field)
@@ -192,25 +218,11 @@ foreach ($users as $user) {
                     <tr>
                         <td>
                             <div class="form-group">
-                                @if($selectedType === 'notSelected')
-                                    <label class="table-checkbox form-checkbox form-inline">
-                                        <input type="checkbox" name="{{ $selectedField }}[]"
-                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
-                                            class="form-icon"></i>
-                                    </label>
-                                @elseif($selectedType === 'selected')
-                                    <label class="table-checkbox form-checkbox form-inline">
-                                        <input type="checkbox" name="{{ $selectedField }}[]"
-                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
-                                            class="form-icon"></i>
-                                    </label>
-                                @elseif($selectedType === 'allSelected')
-                                    <label class="table-checkbox form-checkbox form-inline">
-                                        <input type="checkbox" name="{{ $selectedField }}[]"
-                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
-                                            class="form-icon"></i>
-                                    </label>
-                                @endif
+                                <label class="table-checkbox form-checkbox form-inline">
+                                    <input type="checkbox" name="{{ $selectedField }}[]"
+                                           value="{{ $row['id'] }}" @checked($row['_checked'])><i
+                                        class="form-icon"></i>
+                                </label>
                             </div>
                         </td>
                         @foreach($fields as $name=>$field)
