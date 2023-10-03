@@ -46,16 +46,17 @@ foreach ($fields as $name => &$field) {
 
 $selectedIndex = array_flip($frd[$selectedField] ?? []);
 // notSelected, selected, allSelected
-$selectedType = '';
+$selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
 
 $rows = [];
 foreach ($users as $user) {
     $row = [
+        'id' => $user->getKey(),
         '_link' => route('admin.users.edit', compact('user')),
+        '_checked' => isset($selectedIndex[$user->getKey()]),
+        '_label' => '#' . $user->getKey() . ' - ' . $user->email . ($user->name ? "($user->name)" : ''),
     ];
-    if ($fields['id']['active']) {
-        $row['id'] = $user->getKey();
-    }
+
     if ($fields['status']['active']) {
         $row['status'] = __('user.status.' . $user->status);
     }
@@ -75,6 +76,10 @@ foreach ($users as $user) {
         $row['language_id'] = $user->language?->label ?? '-';
     }
     $rows[] = $row;
+
+    if (!isset($selectedIndex[$row['id']]) && $selectedType === 'allSelected') {
+        $selectedType = 'selected';
+    }
 }
 ?>
 @extends('Html::admin.layouts.app', compact('seo', 'frd'))
@@ -186,11 +191,25 @@ foreach ($users as $user) {
                     <tr>
                         <td>
                             <div class="form-group">
-                                <label class="table-checkbox form-checkbox form-inline">
-                                    <input type="checkbox" name="{{ $selectedField }}[]"
-                                           value="{{ $user->getKey() }}" @checked(isset($selectedIndex[$user->getKey()]))><i
-                                        class="form-icon"></i>
-                                </label>
+                                @if($selectedType === 'notSelected')
+                                    <label class="table-checkbox form-checkbox form-inline">
+                                        <input type="checkbox" name="{{ $selectedField }}[]"
+                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
+                                            class="form-icon"></i>
+                                    </label>
+                                @elseif($selectedType === 'selected')
+                                    <label class="table-checkbox form-checkbox form-inline">
+                                        <input type="checkbox" name="{{ $selectedField }}[]"
+                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
+                                            class="form-icon"></i>
+                                    </label>
+                                @elseif($selectedType === 'allSelected')
+                                    <label class="table-checkbox form-checkbox form-inline">
+                                        <input type="checkbox" name="{{ $selectedField }}[]"
+                                               value="{{ $row['id'] }}" @checked($row['_checked'])><i
+                                            class="form-icon"></i>
+                                    </label>
+                                @endif
                             </div>
                         </td>
                         @foreach($fields as $name=>$field)
@@ -201,10 +220,10 @@ foreach ($users as $user) {
                         <td>
                             <div class="text-right">
                                 <button class="btn btn-action btn-link"><i class="icon icon-copy"></i></button>
-                                <a href="#modal-delete-{{ $user->getKey() }}"
+                                <a href="#modal-delete-{{ $row['id'] }}"
                                    class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
                             </div>
-                            <div class="modal modal-sm" id="modal-delete-{{ $user->getKey() }}">
+                            <div class="modal modal-sm" id="modal-delete-{{ $row['id'] }}">
                                 <a href="#close" class="modal-overlay" aria-label="Close"></a>
                                 <div class="modal-container">
                                     <div class="modal-header">
@@ -212,8 +231,7 @@ foreach ($users as $user) {
                                         <div class="modal-title h5">Подтвердите удаление</div>
                                     </div>
                                     <div class="modal-body">
-                                        Подтверждаете удаление <br><b>#{{ $user->getKey() }} - {{ $user->email }}</b>
-                                        ({{ $user->name }})?
+                                        Подтверждаете удаление <br><b>{{ $row['_label'] }}</b>?
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn btn-error float-left">Удалить</button>
