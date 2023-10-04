@@ -126,6 +126,9 @@
             </div>
         </section>
     </header>
+    @hasSection('breadcrumb')
+        @yield('breadcrumb')
+    @endif
     @hasSection('content')
         @yield('content')
     @endif

@@ -50,17 +50,20 @@ $selectedIndex = array_flip($frd[$selectedField] ?? []);
 // notSelected, selected, allSelected
 $selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
 
+$indexUrl = route('admin.users.index');
+$clearUrl = $indexUrl . (count($clearFrd) > 0 ? '?' . http_build_query($clearFrd) : '');
+
 $frdForSort = [...$frd];
 unset($frdForSort[$sortField]);
 unset($frdForSort[$selectedField]);
 unset($frdForSort[$pageField]);
 $symbolForSort = count($frdForSort) > 0 ? '&' : '?';
-$urlForSort = route('admin.users.index', $frdForSort) . $symbolForSort . $sortField . '=';
+$urlForSort = $indexUrl . (count($frdForSort) > 0 ? '?' . http_build_query($frdForSort) : '') . $symbolForSort . $sortField . '=';
 
 $frdForSelected = [...$frd];
 unset($frdForSelected[$selectedField]);
 $symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
-$urlForSelectedEmpty = route('admin.users.index', $frdForSelected);
+$urlForSelectedEmpty = $indexUrl . (count($frdForSelected) > 0 ? '?' . http_build_query($frdForSelected) : '');
 $urlForSelectedAll = $urlForSelectedEmpty;
 
 $createUrl = route('admin.users.create');
@@ -112,7 +115,7 @@ foreach ($users as $key => $user) {
 ?>
 @extends('Html::admin.layouts.app', compact('seo', 'frd'))
 
-@section('content')
+@section('breadcrumb')
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="{{ route('admin.index') }}">Панель</a>
@@ -121,7 +124,10 @@ foreach ($users as $key => $user) {
             <a href="{{ route('admin.users.index') }}">Пользователи</a>
         </li>
     </ul>
-    <form action="{{ route('admin.users.index') }}" method="GET">
+@endsection
+
+@section('content')
+    <form action="{{ $indexUrl }}" method="GET">
         @csrf
         <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
         @if(count($clearFrd) > 0)
@@ -219,7 +225,7 @@ foreach ($users as $key => $user) {
                     @endforeach
                     <th class="text-right">
                         <button class="btn btn-action btn-link" type="submit"><i class="icon icon-search"></i></button>
-                        <a href="{{ route('admin.users.index', $clearFrd) }}" class="btn btn-action btn-link ml-1"><i
+                        <a href="{{ $clearUrl }}" class="btn btn-action btn-link ml-1"><i
                                 class="icon icon-cross"></i></a>
                     </th>
                 </tr>
