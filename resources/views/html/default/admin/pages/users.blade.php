@@ -1,6 +1,5 @@
 <?php
-/** @var \App\Models\User $user */
-/** @var \Illuminate\Database\Eloquent\Collection $users */
+/** @var \Illuminate\Database\Eloquent\Collection $items */
 /** @var array $frd */
 /** @var array $seo */
 $seo = $seo ?? [];
@@ -8,7 +7,7 @@ $frd = $frd ?? [];
 
 $fields = [
     'id'                => [
-        'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID', 'class' => 'table-column-id',
+        'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID',
     ],
     'status'            => [
         'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', '1' => 'Активные']
@@ -35,7 +34,6 @@ $colActionsTemplate = 'Html::admin.components.users.col-actions';
 $actionsTemplate = 'Html::admin.components.users.actions';
 $indexUrl = route('admin.users.index');
 $isSelect = true;
-$items = $users;
 
 $layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate', 'colActionsTemplate', 'actionsTemplate');
 ?>

@@ -1,8 +1,8 @@
 <?php
-/** @var \App\Models\User $item */
+/** @var \App\Models\Currency $item */
 ?>
 <div class="text-right">
-    <a href="{{ route('admin.users.copy', compact('item')) }}" class="btn btn-action btn-link"><i
+    <a href="{{ route('admin.currencies.copy', compact('item')) }}" class="btn btn-action btn-link"><i
             class="icon icon-copy"></i></a>
     <a href="#modal-list-delete-{{ $item->getKey() }}"
        class="btn btn-action btn-link-error ml-1"><i class="icon icon-delete"></i></a>
@@ -15,11 +15,11 @@
             <div class="modal-title h5">Подтвердите удаление</div>
         </div>
         <div class="modal-body">
-            Подтверждаете удаление <br><b>{{ '#' . $item->getKey() . ' - ' . $item->email . ($item->name ? " ($item->name)" : '') }}</b>?
+            Подтверждаете удаление <br><b>{{ '#' . $item->getKey() . ' - ' . $item->label }}</b>?
         </div>
         <div class="modal-footer">
             <button class="btn btn-error float-left" type="submit"
-                    formaction="{{ route('admin.users.destroy', compact('item')) }}" formmethod="post">
+                    formaction="{{ route('admin.currencies.destroy', compact('item')) }}" formmethod="post">
                 Удалить
             </button>
             <a href="#close" class="btn">Закрыть</a>

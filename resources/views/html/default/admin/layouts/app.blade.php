@@ -108,14 +108,9 @@
             <a href="{{ route('admin.users.index') }}" class="btn btn-link" style="border-color: transparent;">
                 Пользователи
             </a>
-            @if(false)
-                <a href="{{ route('admin.roles.index') }}" class="btn btn-link" style="border-color: transparent;">
-                    Роли
-                </a>
-                <a href="{{ route('admin.products.index') }}" class="btn btn-link" style="border-color: transparent;">
-                    Товары
-                </a>
-            @endif
+            <a href="{{ route('admin.currencies.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Валюты
+            </a>
         </section>
         <section class="navbar-section">
             <div class="input-group input-inline">

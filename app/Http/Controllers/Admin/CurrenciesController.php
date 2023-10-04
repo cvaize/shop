@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Currency;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
-class UsersController extends Controller
+class CurrenciesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,14 +19,14 @@ class UsersController extends Controller
 
         $frd['sort'] = $frd['sort'] ?? '-id';
 
-        $items = User::filter($frd)->paginate(10);
+        $items = Currency::filter($frd)->paginate(10);
         $seo = new SEOData(
-            title: 'Пользователи'
+            title: 'Валюты'
         );
         $data = compact('frd', 'seo', 'items');
 
         if ($request->isJson()) return $data;
-        return view("Html::admin.pages.users", $data);
+        return view("Html::admin.pages.currencies", $data);
     }
 
     /**
@@ -48,7 +48,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $item)
+    public function show(Currency $item)
     {
         //
     }
@@ -56,7 +56,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $item)
+    public function edit(Currency $item)
     {
         //
     }
@@ -64,7 +64,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function copy(User $item)
+    public function copy(Currency $item)
     {
         //
     }
@@ -72,7 +72,7 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $item)
+    public function update(Request $request, Currency $item)
     {
         //
     }
@@ -80,7 +80,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $item): RedirectResponse
+    public function destroy(Currency $item): RedirectResponse
     {
         $item->delete();
         return redirect()->back();
@@ -92,7 +92,7 @@ class UsersController extends Controller
     public function destroySelected(Request $request): RedirectResponse
     {
         $ids = $request->input('selected', []);
-        User::whereIn('id', $ids)->delete();
+        Currency::whereIn('id', $ids)->delete();
 
         return redirect()->back();
     }

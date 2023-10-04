@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\ModelFilters\CommonFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,5 +31,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Currency extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
+
+    protected $fillable = [
+        'code',
+        'label',
+        'exchange_rate',
+        'status',
+    ];
+
+    public function modelFilter()
+    {
+        return $this->provideFilter(CommonFilter::class);
+    }
 }

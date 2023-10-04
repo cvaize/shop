@@ -32,30 +32,6 @@ $paramsFields = [$fieldsField, $sortField, $filterField, $selectedField, $pageFi
 
 foreach ($frd as $name => $value) if (!in_array($name, $paramsFields)) $clearFrd[$name] = $value;
 
-$fields = [
-    'id'                => [
-        'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID', 'class' => 'table-column-id',
-    ],
-    'status'            => [
-        'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', '1' => 'Активные']
-    ],
-    'name'              => [
-        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Название',
-    ],
-    'email'             => [
-        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Email',
-    ],
-    'email_verified_at' => [
-        'operator' => '==', 'active' => true, 'type' => 'date', 'label' => 'Верификация',
-    ],
-    'currency_id'       => [
-        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => ['' => 'Все', '1' => 'Рубль']
-    ],
-    'language_id'       => [
-        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => ['' => 'Все', '1' => 'Русский']
-    ],
-];
-
 if (isset($frd[$fieldsField]) && is_array($frd[$fieldsField])) {
     $fieldsArray = $frd[$fieldsField];
 } else {
@@ -171,27 +147,29 @@ foreach ($items as $key => $item) {
                     @endif
                     @foreach($fields as $name=>$field)
                         @if($field['active'])
-                            <th {!! isset($field['class']) ? 'class="'.$field['class'].'"' : '' !!} >
-                                <input type="hidden" value="{{ $field['operator'] ?? '=' }}"
-                                       name="{{ $filterField }}[{{ $name }}][operator]">
-                                <label class="form-group d-block">
-                                    @if(in_array($field['type'], ['text', 'date']))
-                                        <input class="form-input" type="{{ $field['type'] }}"
-                                               placeholder="{{ $field['label'] }}"
-                                               name="{{ $filterField }}[{{ $name }}][value]"
-                                               value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
-                                    @elseif($field['type'] === 'select')
-                                        <select class="form-select" name="{{ $filterField }}[{{ $name }}][value]"
-                                                value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
-                                            @foreach($field['options'] as $optionValue=>$optionLabel)
-                                                <option
-                                                    value="{{ $optionValue }}" @selected(($frd[$filterField][$name]['value'] ?? '') == $optionValue)>
-                                                    {{ $optionLabel }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    @endif
-                                </label>
+                            <th class="table-column-{{ $name }}">
+                                @isset($field['type'])
+                                    <input type="hidden" value="{{ $field['operator'] ?? '==' }}"
+                                           name="{{ $filterField }}[{{ $name }}][operator]">
+                                    <label class="form-group d-block">
+                                        @if(in_array($field['type'], ['text', 'date']))
+                                            <input class="form-input" type="{{ $field['type'] }}"
+                                                   placeholder="{{ $field['label'] }}"
+                                                   name="{{ $filterField }}[{{ $name }}][value]"
+                                                   value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
+                                        @elseif($field['type'] === 'select')
+                                            <select class="form-select" name="{{ $filterField }}[{{ $name }}][value]"
+                                                    value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
+                                                @foreach($field['options'] as $optionValue=>$optionLabel)
+                                                    <option
+                                                        value="{{ $optionValue }}" @selected(($frd[$filterField][$name]['value'] ?? '') == $optionValue)>
+                                                        {{ $optionLabel }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </label>
+                                @endif
                             </th>
                         @endif
                     @endforeach

@@ -3,7 +3,7 @@
 /** @var string $name */
 ?>
 <td>
-    <a href="{{ route('admin.users.edit', ['user' => $item]) }}" class="link-reset">
+    <a href="{{ route('admin.users.edit', compact('item')) }}" class="link-reset">
         @switch($name)
             @case('id'){{ $item->getKey() }}@break
             @case('status'){{ __('user.status.' . $item->status) }}@break

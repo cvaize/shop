@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -15,20 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$adminResources = [
+    'users' => UsersController::class,
+    'currencies' => CurrenciesController::class
+];
+
 Route::redirect('/', '/admin');
-Route::prefix('/admin')->name('admin.')->group(function (){
+Route::prefix('/admin')->name('admin.')->group(function () use (&$adminResources) {
     Route::redirect('/', '/admin/dashboard')->name('index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard.index');
 
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::get('/users/{user}/copy', [UsersController::class, 'copy'])->name('users.copy');
-    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
-    Route::post('/users/store', [UsersController::class, 'store'])->name('users.store');
-    Route::post('/users/selected/destroy', [UsersController::class, 'destroySelected'])->name('users.destroySelected');
-    Route::post('/users/{user}/update', [UsersController::class, 'update'])->name('users.update');
-    Route::post('/users/{user}/destroy', [UsersController::class, 'destroy'])->name('users.destroy');
-
-    Route::resource('roles', UsersController::class);
-    Route::resource('products', UsersController::class);
+    foreach ($adminResources as $name => $class) {
+        Route::get("/$name", [$class, 'index'])->name("$name.index");
+        Route::get("/$name/create", [$class, 'create'])->name("$name.create");
+        Route::get("/$name/{item}/copy", [$class, 'copy'])->name("$name.copy");
+        Route::get("/$name/{item}/edit", [$class, 'edit'])->name("$name.edit");
+        Route::post("/$name/store", [$class, 'store'])->name("$name.store");
+        Route::post("/$name/selected/destroy", [$class, 'destroySelected'])->name("$name.destroySelected");
+        Route::post("/$name/{item}/update", [$class, 'update'])->name("$name.update");
+        Route::post("/$name/{item}/destroy", [$class, 'destroy'])->name("$name.destroy");
+    }
 });
