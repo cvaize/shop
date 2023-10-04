@@ -19,7 +19,8 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-error float-left" type="submit"
-                    formaction="{{ route('admin.currencies.destroy', compact('item')) }}" formmethod="post">
+                    formaction="{{ route('admin.currencies.destroy', compact('item')) }}" formmethod="post"
+                    name="_token" value="{{ csrf_token() }}">
                 Удалить
             </button>
             <a href="#close" class="btn">Закрыть</a>

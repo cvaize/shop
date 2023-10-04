@@ -42,7 +42,8 @@ class CurrenciesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Currency::create($request->all());
+        return redirect()->route('admin.currencies.index');
     }
 
     /**

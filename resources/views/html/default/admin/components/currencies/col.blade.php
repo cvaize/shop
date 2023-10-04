@@ -7,8 +7,8 @@
         @switch($name)
             @case('id'){{ $item->getKey() }}@break
             @case('status'){{ __('currencies.status.' . $item->status) }}@break
-            @case('name'){{ $item->label }}@break
-            @case('email'){{ $item->code }}@break
+            @case('label'){{ $item->label }}@break
+            @case('code'){{ $item->code }}@break
             @case('exchange_rate'){{ $item->exchange_rate }}@break
         @endswitch
     </a>

@@ -44,4 +44,19 @@ class Currency extends Model
     {
         return $this->provideFilter(CommonFilter::class);
     }
+
+    public static function getStatuses(): array
+    {
+        return [1, 0];
+    }
+
+    public static function getStatusesNames(): array
+    {
+        $statuses = self::getStatuses();
+        $response = [];
+        foreach ($statuses as $status) {
+            $response[$status] = __('currencies.status.' . $status);
+        }
+        return $response;
+    }
 }

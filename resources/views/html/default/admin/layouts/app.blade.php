@@ -114,7 +114,7 @@
         </section>
         <section class="navbar-section">
             <div class="input-group input-inline">
-                <input class="form-input" type="text" placeholder="Глобальный поиск" value="{{ $frd['search'] ?? '' }}">
+                <input class="form-input" type="text" placeholder="Не работающий поиск" value="{{ $frd['search'] ?? '' }}">
                 <button class="btn btn-primary input-group-btn">
                     <i class="icon icon-search"></i>
                 </button>

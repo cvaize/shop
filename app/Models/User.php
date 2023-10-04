@@ -108,6 +108,21 @@ class User extends Authenticatable
         return $this->belongsTo(Language::class);
     }
 
+    public static function getStatuses(): array
+    {
+        return [1, 0];
+    }
+
+    public static function getStatusesNames(): array
+    {
+        $statuses = self::getStatuses();
+        $response = [];
+        foreach ($statuses as $status) {
+            $response[$status] = __('user.status.' . $status);
+        }
+        return $response;
+    }
+
     public function modelFilter()
     {
         return $this->provideFilter(CommonFilter::class);

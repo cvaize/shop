@@ -1,4 +1,6 @@
 {
+    "user.status.0": "Заблокирован",
     "user.status.1": "Активный",
-    "currencies.status.1": "Активный"
+    "currencies.status.0": "Отключен",
+    "currencies.status.1": "Включен"
 }

@@ -78,7 +78,6 @@ foreach ($items as $key => $item) {
 @section('content')
     <form action="{{ $indexUrl }}" method="GET">
         <button type="submit" style="display: none">FixSubmitInputForm</button>
-        @csrf
         <input type="hidden" name="{{ $sortField }}" value="{{ $frd[$sortField]??null }}">
         @if(count($clearFrd) > 0)
             <!-- Параметры других форм -->
@@ -240,4 +239,7 @@ foreach ($items as $key => $item) {
             </div>
         </div>
     </form>
+    @hasSection('after-list')
+        @yield('after-list')
+    @endif
 @endsection
