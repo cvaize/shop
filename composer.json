@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "cvaize/shop",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Shop without JS. MIT License.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
