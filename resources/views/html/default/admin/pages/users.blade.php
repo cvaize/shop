@@ -10,7 +10,10 @@ $fields = [
         'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID',
     ],
     'status'            => [
-        'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => ['' => 'Все', ...\App\Models\User::getStatusesNames()]
+        'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => [
+            '' => 'Все',
+            ...array_map(fn($statusId) => __('users.status.' . $statusId), \App\Enums\UserStatus::values())
+        ]
     ],
     'name'              => [
         'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Название',

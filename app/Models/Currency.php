@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\CurrencyStatus;
+use App\Interfaces\ValidateModel;
 use App\ModelFilters\CommonFilter;
 use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rules\Enum;
 
 /**
  * App\Models\Currency
@@ -29,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Currency extends Model
+class Currency extends Model implements ValidateModel
 {
     use HasFactory, Filterable;
 
@@ -40,23 +43,19 @@ class Currency extends Model
         'status',
     ];
 
-    public function modelFilter()
+    public function getValidateRules(): array
+    {
+        $s = $this->getKey() === null ? [] : ['sometimes'];
+        return [
+            'code'          => [...$s, 'required', 'string', 'min:1', 'max:255'],
+            'label'         => [...$s, 'required', 'string', 'min:1', 'max:255'],
+            'exchange_rate' => [...$s, 'nullable', 'numeric', 'between:0,9999.9999'],
+            'status'        => [...$s, 'required', 'numeric', new Enum(CurrencyStatus::class)],
+        ];
+    }
+
+    public function modelFilter(): ?string
     {
         return $this->provideFilter(CommonFilter::class);
-    }
-
-    public static function getStatuses(): array
-    {
-        return [1, 0];
-    }
-
-    public static function getStatusesNames(): array
-    {
-        $statuses = self::getStatuses();
-        $response = [];
-        foreach ($statuses as $status) {
-            $response[$status] = __('currencies.status.' . $status);
-        }
-        return $response;
     }
 }
