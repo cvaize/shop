@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integerIncrements('id');
             $table->string('code');
             $table->string('label');
-            $table->decimal('exchange_rate', 8, 4)->default(1);
+            $table->decimal('exchange_rate', 12, 4)->default(1);
             $table->unsignedSmallInteger('status')->default(1);
             $table->datetimes();
         });

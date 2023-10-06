@@ -49,7 +49,7 @@ class Currency extends Model implements ValidateModel
         return [
             'code'          => [...$s, 'required', 'string', 'min:1', 'max:255'],
             'label'         => [...$s, 'required', 'string', 'min:1', 'max:255'],
-            'exchange_rate' => [...$s, 'nullable', 'numeric', 'between:0,9999.9999'],
+            'exchange_rate' => [...$s, 'required', 'numeric', 'between:1,99999999.9999'],
             'status'        => [...$s, 'required', 'numeric', new Enum(CurrencyStatus::class)],
         ];
     }

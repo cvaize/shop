@@ -53,27 +53,7 @@ class CurrenciesController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = (new Currency())->getValidateRules();
-        $validator = Validator::make($request->only(array_keys($rules)), $rules);
-
-        $back = 'admin.currencies.index';
-
-        if ($validator->fails()) {
-            if ($request->isJson()) return $validator->errors();
-
-            $form = $request->input('back');
-            if ($form === 'copy') $back = 'admin.currencies.copy';
-            else if ($form === 'create') $back = 'admin.currencies.create';
-
-            return redirect()
-                ->route($back, $back === 'admin.currencies.index' ? ['#modal-currencies-create'] : [])
-                ->withErrors($validator)
-                ->withInput();
-        }
-        /** @var Currency $data */
-        $data = Currency::create($validator->validated());
-        if ($request->isJson()) return $data;
-        return redirect()->route($back);
+        return $this->save($request);
     }
 
     /**
@@ -120,19 +100,7 @@ class CurrenciesController extends Controller
      */
     public function update(Request $request, Currency $item)
     {
-        $rules = $item->getValidateRules();
-        $validator = Validator::make($request->only(array_keys($rules)), $rules);
-
-        if ($validator->fails()) {
-            if ($request->isJson()) return $validator->errors();
-            return redirect()
-                ->route('admin.currencies.edit', $item)
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $item->update($validator->validated());
-        if ($request->isJson()) return $item;
-        return redirect()->route('admin.currencies.edit', $item);
+        return $this->save($request, $item);
     }
 
     /**
@@ -155,5 +123,38 @@ class CurrenciesController extends Controller
 
         if ($request->isJson()) return $data;
         return redirect()->back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    protected function save(Request $request, Currency $item = null)
+    {
+        $isCreate = !$item;
+        $item = $item ?? new Currency();
+
+        $rules = $item->getValidateRules();
+        $validator = Validator::make($request->only(array_keys($rules)), $rules);
+        $anchor = $request->input('anchor');
+
+        if ($validator->fails()) {
+            if ($request->isJson()) return $validator->errors();
+
+            $redirect = redirect()
+                ->to(url()->previous())
+                ->withErrors($validator)
+                ->withInput();
+            if ($anchor) $redirect->withFragment($anchor);
+            return $redirect;
+        }
+
+        if ($isCreate) $item = Currency::create($validator->validated());
+        else $item->update($validator->validated());
+
+        if ($request->isJson()) return $item;
+
+        $redirect = redirect()->to(url()->previous());
+        if ($anchor) $redirect->withFragment($anchor);
+        return $redirect;
     }
 }

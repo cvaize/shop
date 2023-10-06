@@ -15,12 +15,16 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.currencies.store') }}" method="post">
-        @csrf
-        <input type="hidden" name="back" value="create">
-        @include('Html::admin.components.currencies.form')
-        <button class="btn btn-success" type="submit">
-            Создать
-        </button>
-    </form>
+    <div style="max-width: 400px; margin: 0 auto;">
+        <form action="{{ route('admin.currencies.store') }}" method="post">
+            @csrf
+            @include('Html::admin.components.currencies.form')
+            <br>
+            <div class="flex-centered">
+                <button class="btn btn-success" type="submit">
+                    Создать
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection

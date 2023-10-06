@@ -18,12 +18,16 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('admin.currencies.store') }}" method="post">
-        @csrf
-        <input type="hidden" name="back" value="copy">
-        @include('Html::admin.components.currencies.form', compact('item'))
-        <button class="btn btn-success" type="submit">
-            Скопировать
-        </button>
-    </form>
+    <div style="max-width: 400px; margin: 0 auto;">
+        <form action="{{ route('admin.currencies.store') }}" method="post">
+            @csrf
+            @include('Html::admin.components.currencies.form', compact('item'))
+            <br>
+            <div class="flex-centered">
+                <button class="btn btn-success" type="submit">
+                    Скопировать
+                </button>
+            </div>
+        </form>
+    </div>
 @endsection

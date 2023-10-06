@@ -50,7 +50,7 @@ $layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', '
 @section('after-list')
     <form action="{{ route('admin.currencies.store') }}" method="post">
         @csrf
-        <input type="hidden" name="back" value="index">
+        <input type="hidden" name="anchor" value="modal-currencies-create">
         <div class="modal modal-sm" id="modal-currencies-create">
             <a href="#close" class="modal-overlay" aria-label="Close"></a>
             <div class="modal-container">
