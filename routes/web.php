@@ -32,7 +32,7 @@ Route::prefix('/admin')->name('admin.')->group(function () use (&$adminResources
         Route::get("/$name/{item}/copy", [$class, 'copy'])->name("$name.copy");
         Route::get("/$name/{item}/edit", [$class, 'edit'])->name("$name.edit");
         Route::post("/$name/store", [$class, 'store'])->name("$name.store");
-        Route::post("/$name/selected/destroy", [$class, 'destroySelected'])->name("$name.destroySelected");
+        Route::post("/$name/selected/destroy", [$class, 'selectedDestroy'])->name("$name.selectedDestroy");
         Route::post("/$name/{item}/update", [$class, 'update'])->name("$name.update");
         Route::post("/$name/{item}/destroy", [$class, 'destroy'])->name("$name.destroy");
     }

@@ -116,7 +116,7 @@ class CurrenciesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroySelected(Request $request): int|RedirectResponse
+    public function selectedDestroy(Request $request): int|RedirectResponse
     {
         $ids = $request->input('selected', []);
         $data = Currency::whereIn('id', $ids)->delete();

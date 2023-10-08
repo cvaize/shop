@@ -10,4 +10,4 @@
     </ul>
 </div>
 
-@include('Html::admin.components.layouts.list.modal-delete-selected', ['action' => route('admin.currencies.destroySelected')])
+@include('Html::admin.components.layouts.list.modal-delete-selected', ['action' => route('admin.currencies.selectedDestroy')])

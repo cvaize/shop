@@ -89,7 +89,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroySelected(Request $request): RedirectResponse
+    public function selectedDestroy(Request $request): RedirectResponse
     {
         $ids = $request->input('selected', []);
         User::whereIn('id', $ids)->delete();

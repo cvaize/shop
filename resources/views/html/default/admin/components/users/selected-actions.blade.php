@@ -24,7 +24,7 @@
             Подтверждаете удаление одного или нескольких элементов?
         </div>
         <div class="modal-footer">
-            <button class="btn btn-error float-left" type="submit" formaction="{{ route('admin.users.destroySelected') }}"
+            <button class="btn btn-error float-left" type="submit" formaction="{{ route('admin.users.selectedDestroy') }}"
                     formmethod="post" name="_token" value="{{ csrf_token() }}">
                 Удалить
             </button>

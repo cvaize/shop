@@ -30,9 +30,11 @@ $colTemplate = 'Html::admin.components.pages.currencies.col';
 $colActionsTemplate = 'Html::admin.components.pages.currencies.col-actions';
 $actionsTemplate = 'Html::admin.components.pages.currencies.actions';
 $indexUrl = route('admin.currencies.index');
+$selectedDestroyAction = route('admin.currencies.selectedDestroy');
 $isSelect = true;
 
-$layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate', 'colActionsTemplate', 'actionsTemplate');
+$layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate',
+    'colActionsTemplate', 'actionsTemplate', 'selectedDestroyAction');
 ?>
 @extends('Html::admin.layouts.list', $layoutData)
 

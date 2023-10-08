@@ -9,6 +9,7 @@
 /** @var string $colActionsTemplate */
 /** @var string $actionsTemplate */
 /** @var string $indexUrl */
+/** @var string $selectedDestroyAction */
 /** @var bool $isSelect */
 
 if (!isset($colTemplate)) throw new Error('HTML_ADMIN_LAYOUT_LIST_COL_TEMPLATE_NOT_FOUND');
@@ -16,7 +17,8 @@ if (!isset($indexUrl)) throw new Error('HTML_ADMIN_LAYOUT_LIST_INDEX_URL_NOT_FOU
 if (!isset($items)) throw new Error('HTML_ADMIN_LAYOUT_LIST_ITEMS_NOT_FOUND');
 if (!isset($fields)) throw new Error('HTML_ADMIN_LAYOUT_LIST_ITEMS_NOT_FOUND');
 
-$isSelect = $isSelect ?? false;
+$selectedActionsTemplate = $selectedActionsTemplate ?? 'Html::admin.components.layouts.list.selected-actions';
+$isSelect = $isSelect ?? isset($selectedDestroyAction);
 
 $seo = $seo ?? [];
 $frd = $frd ?? [];
@@ -96,14 +98,12 @@ if ($isSelect) {
     </form>
 
     <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
-        <table class="table table-striped table-hover table-column-small">
+        <table class="table table-striped table-hover table-column-select">
             <thead class="bg-primary">
             <tr>
                 @if($isSelect)
                     <th>
-                        @isset($selectedActionsTemplate)
-                            @include($selectedActionsTemplate)
-                        @endisset
+                        @include($selectedActionsTemplate, compact('selectedDestroyAction'))
                     </th>
                 @endif
                 @foreach($fields as $name=>$field)
@@ -137,19 +137,11 @@ if ($isSelect) {
             <tr>
                 @if($isSelect)
                     <th>
-                        <div class="form-group">
-                            @if($selectedType === 'notSelected' || $selectedType === 'selected')
-                                <a href="{{ $urlForSelectedAll }}"
-                                   class="table-checkbox form-checkbox form-inline" style="box-shadow: none">
-                                    <i class="form-icon"></i>
-                                </a>
-                            @elseif($selectedType === 'allSelected')
-                                <a href="{{ $urlForSelectedEmpty }}"
-                                   class="table-checkbox form-checkbox form-inline checked"
-                                   style="box-shadow: none">
-                                    <i class="form-icon"></i>
-                                </a>
-                            @endif
+                        <div class="form-group" style="padding-left: 6px;">
+                            <button class="btn btn-action btn-link" form="form-list-index" type="submit"
+                                    name="selected" value="1">
+                                <i class="icon icon-check"></i>
+                            </button>
                         </div>
                     </th>
                 @endif
@@ -196,7 +188,7 @@ if ($isSelect) {
                 <tr>
                     @if($isSelect)
                         <td>
-                            <div class="form-group">
+                            <div class="form-group" style="padding-left: 6px;">
                                 <label class="table-checkbox form-checkbox form-inline">
                                     <input type="checkbox" form="form-list-selected-actions"
                                            name="{{ $selectedField }}[]"

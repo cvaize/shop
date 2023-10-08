@@ -16,8 +16,8 @@
             background-repeat: no-repeat;
         }
 
-        .table-column-small tr th:first-child,
-        .table-column-small tr td:first-child {
+        .table-column-select tr th:first-child,
+        .table-column-select tr td:first-child {
             width: 50px;
             min-width: 50px;
             max-width: 50px;
