@@ -25,10 +25,10 @@ $fields = [
         'active' => true, 'label' => 'Обменный курс',
     ]
 ];
-$selectedActionsTemplate = 'Html::admin.components.currencies.selected-actions';
-$colTemplate = 'Html::admin.components.currencies.col';
-$colActionsTemplate = 'Html::admin.components.currencies.col-actions';
-$actionsTemplate = 'Html::admin.components.currencies.actions';
+$selectedActionsTemplate = 'Html::admin.components.pages.currencies.selected-actions';
+$colTemplate = 'Html::admin.components.pages.currencies.col';
+$colActionsTemplate = 'Html::admin.components.pages.currencies.col-actions';
+$actionsTemplate = 'Html::admin.components.pages.currencies.actions';
 $indexUrl = route('admin.currencies.index');
 $isSelect = true;
 

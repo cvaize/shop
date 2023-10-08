@@ -3,6 +3,6 @@
 
 @include('Html::admin.components.layouts.list.modal-create', [
     'action' => route('admin.currencies.store'),
-    'form' => 'Html::admin.components.currencies.form',
+    'form' => 'Html::admin.components.pages.currencies.form',
     'formParams' => ['item' => null],
 ])

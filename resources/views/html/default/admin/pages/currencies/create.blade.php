@@ -18,7 +18,7 @@
     <div style="max-width: 400px; margin: 0 auto;">
         <form action="{{ route('admin.currencies.store') }}" method="post">
             @csrf
-            @include('Html::admin.components.currencies.form')
+            @include('Html::admin.components.pages.currencies.form')
             <br>
             <div class="flex-centered">
                 <button class="btn btn-success" type="submit">
