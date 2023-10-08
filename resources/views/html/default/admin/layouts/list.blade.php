@@ -29,8 +29,9 @@ $fieldsField = $fieldsField ?? 'fields';
 $sortField = $sortField ?? 'sort';
 $filterField = $filterField ?? 'filter';
 $selectedField = $selectedField ?? 'selected';
+$selectedAllField = $selectedAllField ?? 'selected_all_page';
 $tokenField = $tokenField ?? '_token';
-$paramsFields = [$fieldsField, $sortField, $filterField, $selectedField, $pageField, $tokenField];
+$paramsFields = [$fieldsField, $sortField, $filterField, $selectedField, $pageField, $tokenField, $selectedAllField];
 
 foreach ($frd as $name => $value) if (!in_array($name, $paramsFields)) $clearFrd[$name] = $value;
 
@@ -53,28 +54,7 @@ unset($frdForPagination[$tokenField]);
 unset($frdForPagination[$selectedField]);
 
 if ($isSelect) {
-    $frdForSelected = [...$frd];
-    unset($frdForSelected[$selectedField]);
-    $symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
-    $urlForSelectedEmpty = $indexUrl . (count($frdForSelected) > 0 ? '?' . http_build_query($frdForSelected) : '');
-    $urlForSelectedAll = $urlForSelectedEmpty;
-
-    $selectedIndex = array_flip($frd[$selectedField] ?? []);
-// notSelected, selected, allSelected
-    $selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
-
-    foreach ($items as $key => $item) {
-        $id = $item->getKey();
-        if ($key === 0) {
-            $urlForSelectedAll .= $symbolForSelected . $selectedField . '[]=' . $id;
-        } else {
-            $urlForSelectedAll .= '&' . $selectedField . '[]=' . $id;
-        }
-
-        if (!isset($selectedIndex[$id]) && $selectedType === 'allSelected') {
-            $selectedType = 'selected';
-        }
-    }
+    $selectedIndex = array_flip(Session::get($selectedField)?->toArray() ?? []);;
 }
 ?>
 @extends('Html::admin.layouts.app', compact('seo', 'frd'))
@@ -98,11 +78,11 @@ if ($isSelect) {
     </form>
 
     <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
-        <table class="table table-striped table-hover table-column-select">
+        <table class="table table-striped table-hover">
             <thead class="bg-primary">
             <tr>
                 @if($isSelect)
-                    <th>
+                    <th class="table-column-checkbox">
                         @include($selectedActionsTemplate, compact('selectedDestroyAction'))
                     </th>
                 @endif
@@ -136,13 +116,11 @@ if ($isSelect) {
             <thead>
             <tr>
                 @if($isSelect)
-                    <th>
-                        <div class="form-group" style="padding-left: 6px;">
-                            <button class="btn btn-action btn-link" form="form-list-index" type="submit"
-                                    name="selected" value="1">
-                                <i class="icon icon-check"></i>
-                            </button>
-                        </div>
+                    <th class="table-column-checkbox">
+                        <button class="btn btn-action btn-link" form="form-list-index" type="submit"
+                                name="{{ $selectedAllField }}" value="{{ $frd[$pageField] ?? 1 }}" title="Выбрать все">
+                            <i class="icon icon-check"></i>
+                        </button>
                     </th>
                 @endif
                 @foreach($fields as $name=>$field)
@@ -187,7 +165,7 @@ if ($isSelect) {
             @foreach($items as $item)
                 <tr>
                     @if($isSelect)
-                        <td>
+                        <td class="table-column-checkbox">
                             <div class="form-group" style="padding-left: 6px;">
                                 <label class="table-checkbox form-checkbox form-inline">
                                     <input type="checkbox" form="form-list-selected-actions"

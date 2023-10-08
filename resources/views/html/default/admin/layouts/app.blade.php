@@ -16,8 +16,7 @@
             background-repeat: no-repeat;
         }
 
-        .table-column-select tr th:first-child,
-        .table-column-select tr td:first-child {
+        .table-column-checkbox{
             width: 50px;
             min-width: 50px;
             max-width: 50px;

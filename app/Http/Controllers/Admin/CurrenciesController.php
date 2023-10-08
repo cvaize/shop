@@ -18,19 +18,37 @@ class CurrenciesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View|\Illuminate\Foundation\Application|Factory|array|Application
+    public function index(Request $request): View|\Illuminate\Foundation\Application|Factory|array|RedirectResponse|Application
     {
         $frd = $request->all();
 
         $frd['sort'] = $frd['sort'] ?? '-id';
 
-        $items = Currency::filter($frd)->paginate(10);
+        $isSelectedAllPage = isset($frd['selected_all_page']);
+        if ($isSelectedAllPage) {
+            $frd['page'] = $frd['selected_all_page'];
+            unset($frd['selected_all_page']);
+        }
+
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $items */
+        $items = Currency::filter($frd)->paginate($frd['per_page'] ?? 10, ['*'], 'page', $frd['page'] ?? 1);
         $seo = new SEOData(
             title: 'Валюты'
         );
         $data = compact('frd', 'seo', 'items');
 
         if ($request->isJson()) return $data;
+
+        if ($isSelectedAllPage) {
+            \Session::flash('selected', $items->pluck((new Currency())->getKeyName()));
+            return redirect()->to(url()->current() . '?' . http_build_query($frd));
+        }
+
+        if($items->count() === 0 && $items->currentPage() > 1) {
+            $frd['page'] = $items->currentPage() - 1;
+            return redirect()->to(url()->current() . '?' . http_build_query($frd));
+        }
+
         return view("Html::admin.pages.currencies.index", $data);
     }
 
