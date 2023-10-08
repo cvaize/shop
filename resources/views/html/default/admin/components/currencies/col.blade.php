@@ -3,7 +3,7 @@
 /** @var string $name */
 ?>
 <td>
-    <a href="#modal-currencies-{{ $item->getKey() }}-edit" class="link-reset">
+    <a href="#modal-list-{{ $item->getKey() }}-edit" class="link-reset">
         @switch($name)
             @case('id'){{ $item->getKey() }}@break
             @case('status'){{ __('currencies.status.' . $item->status) }}@break

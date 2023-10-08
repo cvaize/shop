@@ -44,32 +44,34 @@ foreach ($fields as $name => $field) {
     $fields[$name]['active'] = in_array($name, $fieldsArray);
 }
 
-$selectedIndex = array_flip($frd[$selectedField] ?? []);
-// notSelected, selected, allSelected
-$selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
-
 $clearUrl = $indexUrl . (count($clearFrd) > 0 ? '?' . http_build_query($clearFrd) : '');
 
 $frdForPagination = [...$frd];
 unset($frdForPagination[$tokenField]);
 unset($frdForPagination[$selectedField]);
 
-$frdForSelected = [...$frd];
-unset($frdForSelected[$selectedField]);
-$symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
-$urlForSelectedEmpty = $indexUrl . (count($frdForSelected) > 0 ? '?' . http_build_query($frdForSelected) : '');
-$urlForSelectedAll = $urlForSelectedEmpty;
+if ($isSelect) {
+    $frdForSelected = [...$frd];
+    unset($frdForSelected[$selectedField]);
+    $symbolForSelected = count($frdForSelected) > 0 ? '&' : '?';
+    $urlForSelectedEmpty = $indexUrl . (count($frdForSelected) > 0 ? '?' . http_build_query($frdForSelected) : '');
+    $urlForSelectedAll = $urlForSelectedEmpty;
 
-foreach ($items as $key => $item) {
-    $id = $item->getKey();
-    if ($key === 0) {
-        $urlForSelectedAll .= $symbolForSelected . $selectedField . '[]=' . $id;
-    } else {
-        $urlForSelectedAll .= '&' . $selectedField . '[]=' . $id;
-    }
+    $selectedIndex = array_flip($frd[$selectedField] ?? []);
+// notSelected, selected, allSelected
+    $selectedType = count($selectedIndex) === 0 ? 'notSelected' : 'allSelected';
 
-    if (!isset($selectedIndex[$id]) && $selectedType === 'allSelected') {
-        $selectedType = 'selected';
+    foreach ($items as $key => $item) {
+        $id = $item->getKey();
+        if ($key === 0) {
+            $urlForSelectedAll .= $symbolForSelected . $selectedField . '[]=' . $id;
+        } else {
+            $urlForSelectedAll .= '&' . $selectedField . '[]=' . $id;
+        }
+
+        if (!isset($selectedIndex[$id]) && $selectedType === 'allSelected') {
+            $selectedType = 'selected';
+        }
     }
 }
 ?>
@@ -88,6 +90,11 @@ foreach ($items as $key => $item) {
         @endif
         <input type="hidden" name="page" value="1">
     </form>
+    <form id="form-list-selected-actions" action="{{ $indexUrl }}" method="POST">
+        @csrf
+        <button type="submit" style="display: none">FixSubmitInputForm</button>
+    </form>
+
     <div style="display: block;overflow-x: auto;padding-bottom: 0.75rem;">
         <table class="table table-striped table-hover table-column-small">
             <thead class="bg-primary">
@@ -160,7 +167,8 @@ foreach ($items as $key => $item) {
                                                name="{{ $filterField }}[{{ $name }}][value]"
                                                value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
                                     @elseif($field['type'] === 'select')
-                                        <select class="form-select" form="form-list-index" name="{{ $filterField }}[{{ $name }}][value]"
+                                        <select class="form-select" form="form-list-index"
+                                                name="{{ $filterField }}[{{ $name }}][value]"
                                                 value="{{ $frd[$filterField][$name]['value'] ?? '' }}">
                                             @foreach($field['options'] as $optionValue=>$optionLabel)
                                                 <option
@@ -176,7 +184,8 @@ foreach ($items as $key => $item) {
                     @endif
                 @endforeach
                 <th class="text-right">
-                    <button class="btn btn-action btn-link" form="form-list-index" type="submit"><i class="icon icon-search"></i></button>
+                    <button class="btn btn-action btn-link" form="form-list-index" type="submit"><i
+                            class="icon icon-search"></i></button>
                     <a href="{{ $clearUrl }}" class="btn btn-action btn-link ml-1"><i
                             class="icon icon-cross"></i></a>
                 </th>
@@ -189,7 +198,8 @@ foreach ($items as $key => $item) {
                         <td>
                             <div class="form-group">
                                 <label class="table-checkbox form-checkbox form-inline">
-                                    <input type="checkbox" form="form-list-index" name="{{ $selectedField }}[]"
+                                    <input type="checkbox" form="form-list-selected-actions"
+                                           name="{{ $selectedField }}[]"
                                            value="{{ $item->getKey() }}" @checked(isset($selectedIndex[$item->getKey()]))><i
                                         class="form-icon"></i>
                                 </label>
