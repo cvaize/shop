@@ -9,7 +9,7 @@
             <form id="form-list-store" action="{{ $action }}" method="post">
                 @csrf
                 <input type="hidden" name="anchor" value="modal-list-create">
-                {{ $form }}
+                @include($form, [...$formParams, '_action' => 'create'])
             </form>
         </div>
         <div class="modal-footer">

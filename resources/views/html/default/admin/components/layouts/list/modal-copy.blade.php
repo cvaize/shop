@@ -10,7 +10,7 @@
                   action="{{ $action }}" method="post">
                 @csrf
                 <input type="hidden" name="anchor" value="modal-list-{{ $key }}-copy">
-                {{ $form }}
+                @include($form, [...$formParams, '_action' => 'copy'])
             </form>
         </div>
         <div class="modal-footer">

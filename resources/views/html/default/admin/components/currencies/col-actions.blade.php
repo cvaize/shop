@@ -13,20 +13,16 @@
 ])
 {{--Ссылки на редактирование в колонках--}}
 
-@component('Html::admin.components.layouts.list.modal-edit', [
+@include('Html::admin.components.layouts.list.modal-edit', [
     'key' => $item->getKey(),
-    'action' => route('admin.currencies.update', compact('item'))
+    'action' => route('admin.currencies.update', compact('item')),
+    'form' => 'Html::admin.components.currencies.form',
+    'formParams' => compact('item'),
 ])
-    @slot('form')
-        @include('Html::admin.components.currencies.form', compact('item'))
-    @endslot
-@endcomponent
 
-@component('Html::admin.components.layouts.list.modal-copy', [
+@include('Html::admin.components.layouts.list.modal-copy', [
     'key' => $item->getKey(),
-    'action' => route('admin.currencies.store')
+    'action' => route('admin.currencies.store'),
+    'form' => 'Html::admin.components.currencies.form',
+    'formParams' => compact('item'),
 ])
-    @slot('form')
-        @include('Html::admin.components.currencies.form', compact('item'))
-    @endslot
-@endcomponent
