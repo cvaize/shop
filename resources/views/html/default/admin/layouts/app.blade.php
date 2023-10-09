@@ -110,6 +110,16 @@
         .display-block:not(:checked) ~ .display-block-block {
             display: none;
         }
+
+        .toast-fixed {
+            position: fixed;
+            z-index: 9999;
+            width: 280px;
+            max-width: calc(100vw - 20px);
+            right: 10px;
+            top: 10px;
+            max-height: calc(100vh - 20px);
+        }
     </style>
 </head>
 <body>
@@ -137,6 +147,11 @@
             </div>
         </section>
     </header>
+    @if(Session::has('success'))
+        <div>
+            @include('Html::admin.components.forms.display-block', ['class' => 'toast toast-success toast-fixed', 'content' => Session::get('success')])
+        </div>
+    @endif
     @hasSection('breadcrumb')
         @yield('breadcrumb')
     @endif

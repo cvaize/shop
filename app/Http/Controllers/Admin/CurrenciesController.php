@@ -128,6 +128,7 @@ class CurrenciesController extends Controller
     {
         $item->delete();
         if ($request->isJson()) return $item;
+        \Session::flash('success', 'Удалена валюта #' . $item->getKey() . ' ' . $item->label);
         return redirect()->back();
     }
 
@@ -140,6 +141,7 @@ class CurrenciesController extends Controller
         $data = Currency::whereIn('id', $ids)->delete();
 
         if ($request->isJson()) return $data;
+        \Session::flash('success', 'Удалены валюты #' . implode(', ', $ids));
         return redirect()->back();
     }
 
@@ -171,10 +173,10 @@ class CurrenciesController extends Controller
 
         if ($request->isJson()) return $item;
 
-        if ($isCreate) \Session::flash('saved', 'Создана валюта #' . $item->getKey() . ' ' . $item->label);
-        else \Session::flash('saved', 'Обновлена валюта #' . $item->getKey() . ' ' . $item->label);
+        if ($isCreate) \Session::flash('success', 'Создана валюта #' . $item->getKey() . ' ' . $item->label);
+        else \Session::flash('success', 'Обновлена валюта #' . $item->getKey() . ' ' . $item->label);
 
-        $redirect = redirect()->to(url()->previous())->withInput($request->only(['_action']));
+        $redirect = redirect()->to(url()->previous());
         if ($anchor) $redirect->withFragment($anchor);
         return $redirect;
     }

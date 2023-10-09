@@ -5,7 +5,6 @@ $item = $item ?? null;
 $old = [];
 $fields = ['status', 'label', 'code', 'exchange_rate'];
 $fieldsErrors = [];
-$savedMessage = null;
 
 if (!isset($_action) || old('_action') === $_action) {
     foreach ($fields as $field) {
@@ -18,15 +17,11 @@ if (!isset($_action) || old('_action') === $_action) {
             $fieldsErrors[$field] = $errorsField;
         }
     }
-    $savedMessage = Session::get('saved');
 }
 ?>
 @isset($_action)
     <input type="hidden" name="_action" value="{{ $_action }}">
 @endisset
-@if($savedMessage !== null)
-    @include('Html::admin.components.forms.display-block', ['class' => 'toast toast-success mb-2', 'content' => $savedMessage])
-@endif
 <div class="form-group @isset($fieldsErrors['status']) has-error @endisset">
     <label class="form-label" for="currencies-create-status">Статус</label>
     <select id="currencies-create-status" class="form-select" name="status">
