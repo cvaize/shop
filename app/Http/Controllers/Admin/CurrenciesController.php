@@ -154,7 +154,8 @@ class CurrenciesController extends Controller
         $item = $item ?? new Currency();
 
         $rules = $item->getValidateRules();
-        $validator = Validator::make($request->only(array_keys($rules)), $rules);
+        $rulesKeys = array_keys($rules);
+        $validator = Validator::make($request->only($rulesKeys), $rules);
         $anchor = $request->input('anchor');
 
         if ($validator->fails()) {
@@ -163,7 +164,7 @@ class CurrenciesController extends Controller
             $redirect = redirect()
                 ->to(url()->previous())
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput($request->only([...$rulesKeys, '_action']));
             if ($anchor) $redirect->withFragment($anchor);
             return $redirect;
         }
