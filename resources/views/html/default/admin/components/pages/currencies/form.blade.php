@@ -9,13 +9,9 @@ $fieldsErrors = [];
 if (!isset($_action) || old('_action') === $_action) {
     foreach ($fields as $field) {
         $value = old($field, '1_NULL_1');
-        if ($value !== '1_NULL_1') {
-            $old[$field] = $value;
-        }
+        if ($value !== '1_NULL_1') $old[$field] = $value;
         $errorsField = $errors->get($field);
-        if (count($errorsField) > 0) {
-            $fieldsErrors[$field] = $errorsField;
-        }
+        if (count($errorsField) > 0) $fieldsErrors[$field] = $errorsField;
     }
 }
 ?>
