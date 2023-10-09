@@ -10,7 +10,7 @@
                   action="{{ $action }}" method="post">
                 @csrf
                 <input type="hidden" name="anchor" value="modal-list-{{ $key }}-edit">
-                @include($form, [...$formParams, '_action' => 'update'])
+                @include($form, $formParams)
             </form>
         </div>
         <div class="modal-footer">

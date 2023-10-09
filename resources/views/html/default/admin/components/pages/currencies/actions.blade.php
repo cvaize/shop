@@ -4,5 +4,5 @@
 @include('Html::admin.components.layouts.list.modal-create', [
     'action' => route('admin.currencies.store'),
     'form' => 'Html::admin.components.pages.currencies.form',
-    'formParams' => ['item' => null],
+    'formParams' => ['item' => null, '_action' => 'currencies-create'],
 ])

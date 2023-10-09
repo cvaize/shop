@@ -171,7 +171,10 @@ class CurrenciesController extends Controller
 
         if ($request->isJson()) return $item;
 
-        $redirect = redirect()->to(url()->previous());
+        if ($isCreate) \Session::flash('saved', 'Создана валюта #' . $item->getKey() . ' ' . $item->label);
+        else \Session::flash('saved', 'Обновлена валюта #' . $item->getKey() . ' ' . $item->label);
+
+        $redirect = redirect()->to(url()->previous())->withInput($request->only(['_action']));
         if ($anchor) $redirect->withFragment($anchor);
         return $redirect;
     }

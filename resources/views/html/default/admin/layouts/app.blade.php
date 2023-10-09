@@ -16,7 +16,7 @@
             background-repeat: no-repeat;
         }
 
-        .table-column-checkbox{
+        .table-column-checkbox {
             width: 50px;
             min-width: 50px;
             max-width: 50px;
@@ -64,10 +64,12 @@
         .table-column-id {
             max-width: 100px;
         }
-        .form-checkbox.indeterminate > .form-icon, .form-checkbox.checked > .form-icon, .form-radio.checked > .form-icon, .form-switch.checked > .form-icon{
+
+        .form-checkbox.indeterminate > .form-icon, .form-checkbox.checked > .form-icon, .form-radio.checked > .form-icon, .form-switch.checked > .form-icon {
             background: #5755d9;
             border-color: #5755d9;
         }
+
         .form-checkbox.indeterminate > .form-icon:before {
             background: #fff;
             content: "";
@@ -79,6 +81,7 @@
             top: 50%;
             width: 10px;
         }
+
         .form-checkbox.checked > .form-icon:before {
             background-clip: padding-box;
             border: 0.1rem solid #fff;
@@ -93,6 +96,19 @@
             top: 50%;
             transform: rotate(45deg);
             width: 6px;
+        }
+
+        .display-block {
+            position: fixed;
+            left: -100px;
+            top: -100px;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        .display-block:not(:checked) ~ .display-block-block {
+            display: none;
         }
     </style>
 </head>
@@ -113,7 +129,8 @@
         </section>
         <section class="navbar-section">
             <div class="input-group input-inline">
-                <input class="form-input" type="text" placeholder="Не работающий поиск" value="{{ $frd['search'] ?? '' }}">
+                <input class="form-input" type="text" placeholder="Не работающий поиск"
+                       value="{{ $frd['search'] ?? '' }}">
                 <button class="btn btn-primary input-group-btn">
                     <i class="icon icon-search"></i>
                 </button>

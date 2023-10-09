@@ -17,12 +17,12 @@
     'key' => $item->getKey(),
     'action' => route('admin.currencies.update', compact('item')),
     'form' => 'Html::admin.components.pages.currencies.form',
-    'formParams' => compact('item'),
+    'formParams' => ['item' => $item, '_action' => 'currencies-update-' . $item->getKey()],
 ])
 
 @include('Html::admin.components.layouts.list.modal-copy', [
     'key' => $item->getKey(),
     'action' => route('admin.currencies.store'),
     'form' => 'Html::admin.components.pages.currencies.form',
-    'formParams' => compact('item'),
+    'formParams' => ['item' => $item, '_action' => 'currencies-copy-' . $item->getKey()]
 ])
