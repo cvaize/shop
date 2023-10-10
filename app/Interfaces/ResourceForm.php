@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface ValidateModel
+interface ResourceForm
 {
     public function getValidateRules(): array;
 }

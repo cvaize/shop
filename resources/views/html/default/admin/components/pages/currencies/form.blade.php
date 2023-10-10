@@ -46,7 +46,7 @@ if (!isset($_action) || old('_action') === $_action) {
     <label class="form-label" for="currencies-create-exchange_rate">Обменный курс</label>
     <input name="exchange_rate" class="form-input" type="number"
            id="currencies-create-exchange_rate"
-           placeholder="Код"
+           placeholder="Обменный курс"
            value="{{ array_key_exists('exchange_rate', $old) ? $old['exchange_rate'] : $item?->exchange_rate }}">
     @include('Html::admin.components.forms.form-input-hint', ['fieldsErrors' => $fieldsErrors, 'field' => 'exchange_rate'])
 </div>

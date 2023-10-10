@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Enums\CurrencyStatus;
-use App\Interfaces\ValidateModel;
+use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
+use Eloquent;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Currency
@@ -18,21 +19,21 @@ use Illuminate\Validation\Rules\Enum;
  * @property string $label
  * @property string $exchange_rate
  * @property int $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Currency newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency query()
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereExchangeRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereLabel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Currency whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Currency newModelQuery()
+ * @method static Builder|Currency newQuery()
+ * @method static Builder|Currency query()
+ * @method static Builder|Currency whereCode($value)
+ * @method static Builder|Currency whereCreatedAt($value)
+ * @method static Builder|Currency whereExchangeRate($value)
+ * @method static Builder|Currency whereId($value)
+ * @method static Builder|Currency whereLabel($value)
+ * @method static Builder|Currency whereStatus($value)
+ * @method static Builder|Currency whereUpdatedAt($value)
+ * @mixin Eloquent
  */
-class Currency extends Model implements ValidateModel
+class Currency extends Model implements ResourceModel
 {
     use HasFactory, Filterable;
 
@@ -42,17 +43,6 @@ class Currency extends Model implements ValidateModel
         'exchange_rate',
         'status',
     ];
-
-    public function getValidateRules(): array
-    {
-        $s = $this->getKey() === null ? [] : ['sometimes'];
-        return [
-            'code'          => [...$s, 'required', 'string', 'min:1', 'max:255'],
-            'label'         => [...$s, 'required', 'string', 'min:1', 'max:255'],
-            'exchange_rate' => [...$s, 'required', 'numeric', 'between:1,99999999.9999'],
-            'status'        => [...$s, 'required', 'numeric', new Enum(CurrencyStatus::class)],
-        ];
-    }
 
     public function modelFilter(): ?string
     {
