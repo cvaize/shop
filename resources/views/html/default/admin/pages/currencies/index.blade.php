@@ -23,7 +23,13 @@ $fields = [
     ],
     'exchange_rate' => [
         'active' => true, 'label' => 'Обменный курс',
-    ]
+    ],
+    'created_at'    => [
+        'active' => false, 'label' => 'Дата создания',
+    ],
+    'updated_at'    => [
+        'active' => false, 'label' => 'Дата обновления',
+    ],
 ];
 $selectedActionsTemplate = 'Html::admin.components.pages.currencies.selected-actions';
 $colTemplate = 'Html::admin.components.pages.currencies.col';

@@ -2,98 +2,102 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Enums\CurrencyStatus;
+use App\Enums\LanguageStatus;
+use App\Http\Controllers\ResourceController;
+use App\Http\Forms\UsersForm;
+use App\Interfaces\ResourceForm;
+use App\Interfaces\ResourceModel;
+use App\Models\Currency;
+use App\Models\Language;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
-class UsersController extends Controller
+class UsersController extends ResourceController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    protected function getModel(): ResourceModel|Model
     {
-        $frd = $request->all();
+        $user = (new User());
+        $user->with(['currency', 'language']);
+        return $user;
+    }
 
-        $frd['sort'] = $frd['sort'] ?? '-id';
+    protected function getForm(Request $request, Model|ResourceModel $item): ResourceForm
+    {
+        return new UsersForm($request, $item);
+    }
 
-        $items = User::filter($frd)->paginate(10);
-        $seo = new SEOData(
+    protected function loadRelationship(Request $request, array $data): array
+    {
+        $data['languages'] = Language::where('status', LanguageStatus::Active->value)->get();
+        $data['currencies'] = Currency::where('status', CurrencyStatus::Active->value)->get();
+        return $data;
+    }
+
+    protected function getPageDir(): string
+    {
+        return 'Html::admin.pages.users';
+    }
+
+    protected function getIndexSeo(Request $request): SEOData
+    {
+        return new SEOData(
             title: 'Пользователи'
         );
-        $data = compact('frd', 'seo', 'items');
+    }
 
-        if ($request->isJson()) return $data;
-        return view("Html::admin.pages.users", $data);
+    protected function getCreateSeo(Request $request): SEOData
+    {
+        return new SEOData(
+            title: 'Создание пользователя'
+        );
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @param Request $request
+     * @param ResourceModel|Model $item
+     * @return SEOData
      */
-    public function create()
+    protected function getShowSeo(Request $request, ResourceModel|Model $item): SEOData
     {
-        //
+        return new SEOData(
+            title: 'Пользователь "' . $item->email . '"'
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    protected function getEditSeo(Request $request, ResourceModel|Model $item): SEOData
     {
-        //
+        return new SEOData(
+            title: 'Редактирование пользователя "' . $item->email . '"'
+        );
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $item)
+    protected function getCopySeo(Request $request, ResourceModel|Model $item): SEOData
     {
-        //
+        return new SEOData(
+            title: 'Копирование пользователя "' . $item->email . '"'
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $item)
+    protected function getCreateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        //
+        return 'Создан пользователь #' . $item->getKey() . ' ' . $item->email;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function copy(User $item)
+    protected function getUpdateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        //
+        return 'Обновлен пользователь #' . $item->getKey() . ' ' . $item->email;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $item)
+    protected function getDestroySuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        //
+        return 'Удален пользователь #' . $item->getKey() . ' ' . $item->email;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $item): RedirectResponse
+    protected function getSelectedDestroySuccessMessage(Request $request, array $ids): string
     {
-        $item->delete();
-        return redirect()->back();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function selectedDestroy(Request $request): RedirectResponse
-    {
-        $ids = $request->input('selected', []);
-        User::whereIn('id', $ids)->delete();
-
-        return redirect()->back();
+        return 'Удалены пользователи #' . implode(', ', $ids);
     }
 }

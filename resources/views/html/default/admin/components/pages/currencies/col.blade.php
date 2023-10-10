@@ -10,6 +10,8 @@
             @case('label'){{ $item->label }}@break
             @case('code'){{ $item->code }}@break
             @case('exchange_rate'){{ $item->exchange_rate }}@break
+            @case('created_at'){{ $item->created_at?->format('d/m/Y H:i:s') }}@break
+            @case('updated_at'){{ $item->updated_at?->format('d/m/Y H:i:s') }}@break
         @endswitch
     </a>
 </td>

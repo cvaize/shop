@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
         $seo = new SEOData(
-            title: 'Dashboard'
+            title: 'Панель'
         );
         $data = compact('seo');
 

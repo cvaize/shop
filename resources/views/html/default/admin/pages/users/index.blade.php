@@ -1,5 +1,7 @@
 <?php
 /** @var \Illuminate\Database\Eloquent\Collection $items */
+/** @var \Illuminate\Database\Eloquent\Collection $currencies */
+/** @var \Illuminate\Database\Eloquent\Collection $languages */
 /** @var array $frd */
 /** @var array $seo */
 $seo = $seo ?? [];
@@ -25,20 +27,34 @@ $fields = [
         'operator' => '==', 'active' => true, 'type' => 'date', 'label' => 'Верификация',
     ],
     'currency_id'       => [
-        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => ['' => 'Все', '1' => 'Рубль']
+        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Валюта', 'options' => [
+            '' => 'Все',
+            ...$currencies->pluck('label', 'id')->toArray()
+        ]
     ],
     'language_id'       => [
-        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => ['' => 'Все', '1' => 'Русский']
+        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Язык', 'options' => [
+            '' => 'Все',
+            ...$languages->pluck('label', 'id')->toArray()
+        ]
+    ],
+    'created_at' => [
+        'active' => false, 'label' => 'Дата создания',
+    ],
+    'updated_at' => [
+        'active' => false, 'label' => 'Дата обновления',
     ],
 ];
-$selectedActionsTemplate = 'Html::admin.components.users.selected-actions';
-$colTemplate = 'Html::admin.components.users.col';
-$colActionsTemplate = 'Html::admin.components.users.col-actions';
-$actionsTemplate = 'Html::admin.components.users.actions';
+$selectedActionsTemplate = 'Html::admin.components.pages.users.selected-actions';
+$colTemplate = 'Html::admin.components.pages.users.col';
+$colActionsTemplate = 'Html::admin.components.pages.users.col-actions';
+$actionsTemplate = 'Html::admin.components.pages.users.actions';
 $indexUrl = route('admin.users.index');
+$selectedDestroyAction = route('admin.users.selectedDestroy');
 $isSelect = true;
 
-$layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate', 'colActionsTemplate', 'actionsTemplate');
+$layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate',
+    'colActionsTemplate', 'actionsTemplate', 'selectedDestroyAction');
 ?>
 @extends('Html::admin.layouts.list', $layoutData)
 

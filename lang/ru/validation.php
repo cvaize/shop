@@ -184,9 +184,13 @@ return [
 
     'attributes' => [
         'label'         => 'Название',
+        'name'          => 'Название',
+        'email'         => 'E-mail',
         'code'          => 'Код',
         'exchange_rate' => 'Обменный курс',
         'status'        => 'Статус',
+        'currency_id'   => 'Валюта',
+        'language_id'   => 'Язык',
     ],
 
 ];

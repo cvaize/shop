@@ -3,9 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Enums\CurrencyStatus;
 use App\Enums\UserStatus;
-use App\Interfaces\ValidateModel;
+use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
 use Database\Factories\UserFactory;
 use Eloquent;
@@ -62,7 +61,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class User extends Authenticatable implements ValidateModel
+class User extends Authenticatable implements ResourceModel
 {
     use HasApiTokens, HasFactory, Notifiable, Filterable;
 
@@ -101,20 +100,6 @@ class User extends Authenticatable implements ValidateModel
         'password'          => 'hashed',
     ];
 
-    public function getValidateRules(): array
-    {
-        $s = $this->getKey() === null ? [] : ['sometimes'];
-        return [
-            'name'        => [...$s, 'nullable', 'string', 'min:1', 'max:255'],
-            'email'       => [...$s, 'required', 'email', 'min:1', 'max:255'],
-            'password'    => [...$s, 'nullable', 'string', 'min:1', 'max:255'],
-            'language_id' => [...$s, 'nullable', 'numeric', 'exists:' . Language::class],
-            'currency_id' => [...$s, 'nullable', 'numeric', 'exists:' . Currency::class],
-            'status'      => [...$s, 'required', 'numeric', new Enum(UserStatus::class)],
-            'superuser'   => [...$s, 'nullable', 'boolean'],
-        ];
-    }
-
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
@@ -125,7 +110,7 @@ class User extends Authenticatable implements ValidateModel
         return $this->belongsTo(Language::class);
     }
 
-    public function modelFilter()
+    public function modelFilter(): ?string
     {
         return $this->provideFilter(CommonFilter::class);
     }

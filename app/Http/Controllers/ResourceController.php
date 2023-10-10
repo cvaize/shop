@@ -20,19 +20,19 @@ abstract class ResourceController extends Controller
 
     abstract protected function getForm(Request $request, ResourceModel|Model $item): ResourceForm;
 
-    public function getPageDir(): string
+    protected function getPageDir(): string
     {
         return 'Html::admin.pages.entities';
     }
 
-    public function getIndexSeo(Request $request): SEOData
+    protected function getIndexSeo(Request $request): SEOData
     {
         return new SEOData(
             title: 'Список'
         );
     }
 
-    public function getCreateSeo(Request $request): SEOData
+    protected function getCreateSeo(Request $request): SEOData
     {
         return new SEOData(
             title: 'Создание'
@@ -44,45 +44,55 @@ abstract class ResourceController extends Controller
      * @param ResourceModel|Model $item
      * @return SEOData
      */
-    public function getShowSeo(Request $request, ResourceModel|Model $item): SEOData
+    protected function getShowSeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
             title: 'Страница'
         );
     }
 
-    public function getEditSeo(Request $request, ResourceModel|Model $item): SEOData
+    protected function getEditSeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
             title: 'Редактирование'
         );
     }
 
-    public function getCopySeo(Request $request, ResourceModel|Model $item): SEOData
+    protected function getCopySeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
             title: 'Копирование'
         );
     }
 
-    public function getCreateSuccessMessage(Request $request, ResourceModel|Model $item): string
+    protected function getCreateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
         return 'Создана запись в таблице ' . $item->getTable() . ' #' . $item->getKey();
     }
 
-    public function getUpdateSuccessMessage(Request $request, ResourceModel|Model $item): string
+    protected function getUpdateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
         return 'Обновлена запись в таблице ' . $item->getTable() . ' #' . $item->getKey();
     }
 
-    public function getDestroySuccessMessage(Request $request, ResourceModel|Model $item): string
+    protected function getDestroySuccessMessage(Request $request, ResourceModel|Model $item): string
     {
         return 'Удалена запись в таблице ' . $item->getTable() . ' #' . $item->getKey();
     }
 
-    public function getSelectedDestroySuccessMessage(Request $request, array $ids): string
+    protected function getSelectedDestroySuccessMessage(Request $request, array $ids): string
     {
         return 'Удалены записи в таблице ' . $this->getModel()->getTable() . ' #' . implode(', ', $ids);
+    }
+
+    protected function getIndexFields(): array
+    {
+        return ['filter', 'page', 'per_page', 'fields', 'sort', 'selected', 'selected_all_page'];
+    }
+
+    protected function loadRelationship(Request $request, array $data): array
+    {
+        return $data;
     }
 
     /**
@@ -91,7 +101,7 @@ abstract class ResourceController extends Controller
      */
     public function index(Request $request): mixed
     {
-        $frd = $request->only(['page', 'per_page', 'fields', 'sort', 'selected', 'selected_all_page']);
+        $frd = $request->only($this->getIndexFields());
 
         $frd['sort'] = $frd['sort'] ?? '-id';
 
@@ -103,8 +113,11 @@ abstract class ResourceController extends Controller
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $items */
         $items = $this->getModel()::filter($frd)->paginate($frd['per_page'] ?? 10, ['*'], 'page', $frd['page'] ?? 1);
+
         $seo = $this->getIndexSeo($request);
         $data = compact('frd', 'seo', 'items');
+
+        $data = $this->loadRelationship($request, $data);
 
         if ($request->isJson()) return $data;
 
@@ -130,6 +143,7 @@ abstract class ResourceController extends Controller
     {
         $seo = $this->getCreateSeo($request);
         $data = compact('seo');
+        $data = $this->loadRelationship($request, $data);
         if ($request->isJson()) return $data;
         $pageDir = $this->getPageDir();
         return view("$pageDir.create", $data);
@@ -152,6 +166,7 @@ abstract class ResourceController extends Controller
         $item = $this->getModel()::findOrFail($item);
         $seo = $this->getShowSeo($request, $item);
         $data = compact('seo', 'item');
+        $data = $this->loadRelationship($request, $data);
         if ($request->isJson()) return $data;
         $pageDir = $this->getPageDir();
         return view("$pageDir.show", $data);
@@ -165,6 +180,7 @@ abstract class ResourceController extends Controller
         $item = $this->getModel()::findOrFail($item);
         $seo = $this->getEditSeo($request, $item);
         $data = compact('seo', 'item');
+        $data = $this->loadRelationship($request, $data);
         if ($request->isJson()) return $data;
         $pageDir = $this->getPageDir();
         return view("$pageDir.edit", $data);
@@ -178,6 +194,7 @@ abstract class ResourceController extends Controller
         $item = $this->getModel()::findOrFail($item);
         $seo = $this->getCopySeo($request, $item);
         $data = compact('seo', 'item');
+        $data = $this->loadRelationship($request, $data);
         if ($request->isJson()) return $data;
         $pageDir = $this->getPageDir();
         return view("$pageDir.copy", $data);
