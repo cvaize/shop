@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 $adminResources = [
     'users' => UsersController::class,
-    'currencies' => CurrenciesController::class
+    'currencies' => CurrenciesController::class,
+    'languages' => LanguageController::class
 ];
 
 Route::redirect('/', '/admin');

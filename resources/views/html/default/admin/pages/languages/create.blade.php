@@ -1,6 +1,3 @@
-<?php
-/** @var \App\Models\Currency $item */
-?>
 @extends('Html::admin.layouts.app', compact('seo'))
 
 @section('breadcrumb')
@@ -9,23 +6,23 @@
             <a href="{{ route('admin.index') }}">Панель</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('admin.currencies.index') }}">Валюты</a>
+            <a href="{{ route('admin.languages.index') }}">Языки</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('admin.currencies.edit', $item) }}">Редактирование валюты "{{ $item->label }}"</a>
+            <a href="{{ route('admin.languages.create') }}">Создание языка</a>
         </li>
     </ul>
 @endsection
 
 @section('content')
     <div style="max-width: 400px; margin: 0 auto;">
-        <form action="{{ route('admin.currencies.update', $item) }}" method="post">
+        <form action="{{ route('admin.languages.store') }}" method="post">
             @csrf
-            @include('Html::admin.components.pages.currencies.form', compact('item'))
+            @include('Html::admin.components.pages.languages.form')
             <br>
             <div class="flex-centered">
                 <button class="btn btn-success" type="submit">
-                    Обновить
+                    Создать
                 </button>
             </div>
         </form>

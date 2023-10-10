@@ -136,6 +136,9 @@
             <a href="{{ route('admin.currencies.index') }}" class="btn btn-link" style="border-color: transparent;">
                 Валюты
             </a>
+            <a href="{{ route('admin.languages.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Языки
+            </a>
         </section>
         <section class="navbar-section">
             <div class="input-group input-inline">

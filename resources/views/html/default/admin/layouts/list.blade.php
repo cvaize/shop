@@ -91,7 +91,7 @@ if ($isSelect) {
                         <th>
                             <button type="submit"
                                     form="form-list-index"
-                                    name="sort" value="{{ ($frd[$sortField] === $name?'-'.$name: $name) }}"
+                                    name="sort" value="{{ ($frd[$sortField] === '-'.$name?$name: '-'.$name) }}"
                                     class="btn btn-link-white text-bold">
                                 {{ $field['label'] }}
                                 @if($frd[$sortField] === $name)
