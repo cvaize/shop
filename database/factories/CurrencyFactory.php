@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Stock>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Currency>
  */
-class StockFactory extends Factory
+class CurrencyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class StockFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'label' => fake()->currencyCode(),
+            'code' => fake()->currencyCode(),
         ];
     }
 }

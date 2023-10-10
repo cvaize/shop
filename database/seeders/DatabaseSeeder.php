@@ -12,11 +12,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         \App\Models\User::factory(100)->create();
+        \App\Models\User::factory(100)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\Language::factory()->create([
+            'label' => 'Русский',
+            'code'  => 'ru',
+        ]);
+
+        \App\Models\Language::factory()->create([
+            'label' => 'Английский',
+            'code'  => 'en',
+        ]);
+
+        \App\Models\Currency::factory()->create([
+            'label'         => 'Рубль',
+            'code'          => 'rub',
+            'exchange_rate' => 1
+        ]);
+
+        \App\Models\Currency::factory()->create([
+            'label'         => 'Доллар',
+            'code'          => 'usd',
+            'exchange_rate' => 100
+        ]);
     }
 }
