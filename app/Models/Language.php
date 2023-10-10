@@ -26,6 +26,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Language whereLabel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Language whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Language whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Language filter(array $input = [], $filter = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Language paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Language simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Language whereBeginsWith($column, $value, $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|Language whereEndsWith($column, $value, $boolean = 'and')
+ * @method static \Illuminate\Database\Eloquent\Builder|Language whereLike($column, $value, $boolean = 'and')
  * @mixin \Eloquent
  */
 class Language extends Model implements ResourceModel

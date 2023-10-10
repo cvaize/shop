@@ -31,6 +31,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Currency whereLabel($value)
  * @method static Builder|Currency whereStatus($value)
  * @method static Builder|Currency whereUpdatedAt($value)
+ * @method static Builder|Currency filter(array $input = [], $filter = null)
+ * @method static Builder|Currency paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|Currency simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|Currency whereBeginsWith($column, $value, $boolean = 'and')
+ * @method static Builder|Currency whereEndsWith($column, $value, $boolean = 'and')
+ * @method static Builder|Currency whereLike($column, $value, $boolean = 'and')
  * @mixin Eloquent
  */
 class Currency extends Model implements ResourceModel

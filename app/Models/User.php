@@ -59,6 +59,14 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereSuperuser($value)
  * @method static Builder|User whereUpdatedAt($value)
+ * @property-read \App\Models\Currency|null $currency
+ * @property-read \App\Models\Language|null $language
+ * @method static Builder|User filter(array $input = [], $filter = null)
+ * @method static Builder|User paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|User simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
+ * @method static Builder|User whereBeginsWith($column, $value, $boolean = 'and')
+ * @method static Builder|User whereEndsWith($column, $value, $boolean = 'and')
+ * @method static Builder|User whereLike($column, $value, $boolean = 'and')
  * @mixin Eloquent
  */
 class User extends Authenticatable implements ResourceModel

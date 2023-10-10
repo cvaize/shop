@@ -18,15 +18,16 @@ class UsersForm implements ResourceForm
 
     public function getValidateRules(): array
     {
-        $s = $this->model->getKey() === null ? [] : ['sometimes'];
+        $key = $this->model->getKey();
+        $s = $key === null ? [] : ['sometimes'];
         return [
             'name'        => [...$s, 'nullable', 'string', 'min:1', 'max:255'],
-            'email'       => [...$s, 'required', 'email', 'min:1', 'max:255'],
+            'email'       => [...$s, 'required', 'email', 'min:1', 'max:255', 'unique:'.$this->model::class.',email,'.$key],
             'password'    => [...$s, 'nullable', 'string', 'min:1', 'max:255'],
             'language_id' => [...$s, 'nullable', 'numeric', 'exists:' . Language::class . ',id'],
             'currency_id' => [...$s, 'nullable', 'numeric', 'exists:' . Currency::class . ',id'],
             'status'      => [...$s, 'required', 'numeric', new Enum(UserStatus::class)],
-            'superuser'   => [...$s, 'nullable', 'boolean'],
+//            'superuser'   => [...$s, 'nullable', 'boolean'],
         ];
     }
 }
