@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\OrderServiceFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|OrderService newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderService newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OrderService query()

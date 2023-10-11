@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $comment
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\OrderFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Order newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Order query()
@@ -53,4 +52,22 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'cdate',
+        'channel',
+        'chour',
+        'cmonth',
+        'comment',
+        'currency_id',
+        'cwday',
+        'cweek',
+        'date_delivery',
+        'date_payment',
+        'invoiceno',
+        'language_id',
+        'status_delivery',
+        'status_payment',
+        'user_id',
+    ];
 }

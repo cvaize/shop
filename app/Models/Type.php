@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\TypeFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Type newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Type newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Type query()
@@ -33,4 +32,12 @@ use Illuminate\Database\Eloquent\Model;
 class Type extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'domain_id',
+        'label',
+        'pos',
+        'status',
+    ];
 }

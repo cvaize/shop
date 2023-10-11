@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $boost
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -45,4 +44,18 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'boost',
+        'code',
+        'config',
+        'instock',
+        'parent_id',
+        'rating',
+        'ratings',
+        'scale',
+        'slug',
+        'status',
+        'type_id',
+    ];
 }

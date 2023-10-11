@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $default
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\LocaleFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Locale newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Locale newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Locale query()
@@ -33,4 +32,12 @@ use Illuminate\Database\Eloquent\Model;
 class Locale extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'currency_id',
+        'default',
+        'language_id',
+        'pos',
+        'status',
+    ];
 }

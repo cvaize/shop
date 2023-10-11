@@ -38,7 +38,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\AddressFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address query()
@@ -77,4 +76,34 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'address1',
+        'address2',
+        'address3',
+        'birthday',
+        'city',
+        'company',
+        'country',
+        'email',
+        'firstname',
+        'inn',
+        'language',
+        'language_id',
+        'lastname',
+        'latitude',
+        'longitude',
+        'ogrn',
+        'patronymic',
+        'pos',
+        'postal',
+        'salutation',
+        'state',
+        'status',
+        'telefax',
+        'telephone',
+        'title',
+        'vat_id',
+        'website',
+    ];
 }

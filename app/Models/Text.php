@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\TextFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Text newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Text newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Text query()
@@ -33,4 +32,12 @@ use Illuminate\Database\Eloquent\Model;
 class Text extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'content',
+        'language_id',
+        'pos',
+        'status',
+        'type_id',
+    ];
 }

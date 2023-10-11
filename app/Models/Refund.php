@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\RefundFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Refund query()

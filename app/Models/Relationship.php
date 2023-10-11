@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\RelationshipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Relationship newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Relationship newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Relationship query()
@@ -37,4 +36,14 @@ use Illuminate\Database\Eloquent\Model;
 class Relationship extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'parent_id',
+        'parent_type',
+        'pos',
+        'relationship_id',
+        'relationship_type',
+        'status',
+        'type_id',
+    ];
 }

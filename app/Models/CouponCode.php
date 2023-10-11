@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $end
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\CouponCodeFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|CouponCode newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CouponCode newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CouponCode query()
@@ -33,4 +32,12 @@ use Illuminate\Database\Eloquent\Model;
 class CouponCode extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'count',
+        'coupon_id',
+        'end',
+        'start',
+    ];
 }
