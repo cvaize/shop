@@ -2,8 +2,7 @@
 
 namespace App\Http\Forms;
 
-use App\Enums\CurrencyStatus;
-use App\Enums\LanguageStatus;
+use App\Enums\CommonStatus;
 use App\Interfaces\ResourceForm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class LanguagesForm implements ResourceForm
         return [
             'code'          => [...$s, 'required', 'string', 'min:1', 'max:255'],
             'label'         => [...$s, 'required', 'string', 'min:1', 'max:255'],
-            'status'        => [...$s, 'required', 'numeric', new Enum(LanguageStatus::class)],
+            'status'        => [...$s, 'required', 'numeric', new Enum(CommonStatus::class)],
         ];
     }
 }

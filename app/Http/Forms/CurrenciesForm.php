@@ -2,7 +2,7 @@
 
 namespace App\Http\Forms;
 
-use App\Enums\CurrencyStatus;
+use App\Enums\CommonStatus;
 use App\Interfaces\ResourceForm;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class CurrenciesForm implements ResourceForm
             'code'          => [...$s, 'required', 'string', 'min:1', 'max:255'],
             'label'         => [...$s, 'required', 'string', 'min:1', 'max:255'],
             'exchange_rate' => [...$s, 'required', 'numeric', 'between:1,99999999.9999'],
-            'status'        => [...$s, 'required', 'numeric', new Enum(CurrencyStatus::class)],
+            'status'        => [...$s, 'required', 'numeric', new Enum(CommonStatus::class)],
         ];
     }
 }

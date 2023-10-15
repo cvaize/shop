@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Enums\UserStatus;
 use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
 use Database\Factories\UserFactory;
@@ -18,7 +17,6 @@ use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\Rules\Enum;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -59,8 +57,8 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User whereStatus($value)
  * @method static Builder|User whereSuperuser($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @property-read \App\Models\Currency|null $currency
- * @property-read \App\Models\Language|null $language
+ * @property-read Currency|null $currency
+ * @property-read Language|null $language
  * @method static Builder|User filter(array $input = [], $filter = null)
  * @method static Builder|User paginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
  * @method static Builder|User simplePaginateFilter($perPage = null, $columns = [], $pageName = 'page', $page = null)
@@ -85,7 +83,6 @@ class User extends Authenticatable implements ResourceModel
         'currency_id',
         'password',
         'status',
-        'superuser',
     ];
 
     /**
@@ -96,6 +93,7 @@ class User extends Authenticatable implements ResourceModel
     protected $hidden = [
         'password',
         'remember_token',
+        'superuser',
     ];
 
     /**

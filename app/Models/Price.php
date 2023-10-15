@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Interfaces\ResourceModel;
+use App\ModelFilters\CommonFilter;
+use Eloquent;
+use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Price
@@ -17,27 +23,27 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $tax
  * @property int $pos
  * @property int $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Price newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Price newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Price query()
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereCosts($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price wherePos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereRebate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereTax($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Price whereValue($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Price newModelQuery()
+ * @method static Builder|Price newQuery()
+ * @method static Builder|Price query()
+ * @method static Builder|Price whereCosts($value)
+ * @method static Builder|Price whereCreatedAt($value)
+ * @method static Builder|Price whereCurrencyId($value)
+ * @method static Builder|Price whereId($value)
+ * @method static Builder|Price wherePos($value)
+ * @method static Builder|Price whereQuantity($value)
+ * @method static Builder|Price whereRebate($value)
+ * @method static Builder|Price whereStatus($value)
+ * @method static Builder|Price whereTax($value)
+ * @method static Builder|Price whereUpdatedAt($value)
+ * @method static Builder|Price whereValue($value)
+ * @mixin Eloquent
  */
-class Price extends Model
+class Price extends Model implements ResourceModel
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'costs',
@@ -49,4 +55,9 @@ class Price extends Model
         'tax',
         'value',
     ];
+
+    public function modelFilter(): ?string
+    {
+        return $this->provideFilter(CommonFilter::class);
+    }
 }

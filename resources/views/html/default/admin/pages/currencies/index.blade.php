@@ -12,7 +12,7 @@ $fields = [
     'status'        => [
         'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => [
             '' => 'Все',
-            ...array_map(fn($statusId) => __('currencies.status.' . $statusId), \App\Enums\CurrencyStatus::values())
+            ...array_map(fn($statusId) => __('status.' . $statusId), \App\Enums\CommonStatus::values())
         ]
     ],
     'label'         => [

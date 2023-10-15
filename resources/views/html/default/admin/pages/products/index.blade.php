@@ -1,39 +1,47 @@
 <?php
 /** @var \Illuminate\Database\Eloquent\Collection $items */
+/** @var \Illuminate\Database\Eloquent\Collection $currencies */
+/** @var \Illuminate\Database\Eloquent\Collection $types */
 /** @var array $frd */
 /** @var array $seo */
 $seo = $seo ?? [];
 $frd = $frd ?? [];
 
 $fields = [
-    'id'            => [
+    'id'                => [
         'operator' => '==', 'active' => true, 'type' => 'text', 'label' => 'ID',
     ],
-    'status'        => [
+    'status'            => [
         'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Статус', 'options' => [
             '' => 'Все',
             ...array_map(fn($statusId) => __('status.' . $statusId), \App\Enums\CommonStatus::values())
         ]
     ],
-    'label'         => [
-        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Название',
+    'type_id'       => [
+        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Тип', 'options' => [
+            '' => 'Все',
+            ...$types->pluck('label', 'id')->toArray()
+        ]
     ],
-    'code'          => [
+    'code'              => [
         'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Код',
     ],
-    'created_at'    => [
+    'slug'             => [
+        'operator' => '~=', 'active' => true, 'type' => 'text', 'label' => 'Slug',
+    ],
+    'created_at' => [
         'active' => false, 'label' => 'Дата создания',
     ],
-    'updated_at'    => [
+    'updated_at' => [
         'active' => false, 'label' => 'Дата обновления',
     ],
 ];
-$selectedActionsTemplate = 'Html::admin.components.pages.languages.selected-actions';
-$colTemplate = 'Html::admin.components.pages.languages.col';
-$colActionsTemplate = 'Html::admin.components.pages.languages.col-actions';
-$actionsTemplate = 'Html::admin.components.pages.languages.actions';
-$indexUrl = route('admin.languages.index');
-$selectedDestroyAction = route('admin.languages.selectedDestroy');
+$selectedActionsTemplate = 'Html::admin.components.pages.products.selected-actions';
+$colTemplate = 'Html::admin.components.pages.products.col';
+$colActionsTemplate = 'Html::admin.components.pages.products.col-actions';
+$actionsTemplate = 'Html::admin.components.pages.products.actions';
+$indexUrl = route('admin.products.index');
+$selectedDestroyAction = route('admin.products.selectedDestroy');
 $isSelect = true;
 
 $layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', 'selectedActionsTemplate', 'colTemplate',
@@ -47,7 +55,7 @@ $layoutData = compact('seo', 'frd', 'fields', 'items', 'isSelect', 'indexUrl', '
             <a href="{{ route('admin.index') }}">Панель</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ $indexUrl }}">Языки</a>
+            <a href="{{ $indexUrl }}">Товары</a>
         </li>
     </ul>
 @endsection

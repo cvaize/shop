@@ -21,10 +21,10 @@ if (!isset($_action) || old('_action') === $_action) {
 <div class="form-group @isset($fieldsErrors['status']) has-error @endisset">
     <label class="form-label" for="currencies-create-status">{{ __('validation.attributes.status') }}</label>
     <select id="currencies-create-status" class="form-select" name="status">
-        @foreach(\App\Enums\CurrencyStatus::values() as $statusId)
+        @foreach(\App\Enums\CommonStatus::values() as $statusId)
             <option
                 value="{{ $statusId }}" @selected((string)(array_key_exists('status', $old) ? $old['status'] : $item?->status) === (string)$statusId)>
-                {{ __('currencies.status.' . $statusId) }}
+                {{ __('status.' . $statusId) }}
             </option>
         @endforeach
     </select>

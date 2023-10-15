@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Interfaces\ResourceModel;
+use App\ModelFilters\CommonFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,9 +30,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Category extends Model
+class Category extends Model implements ResourceModel
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'domain_id',
@@ -37,4 +40,9 @@ class Category extends Model
         'slug',
         'status',
     ];
+
+    public function modelFilter(): ?string
+    {
+        return $this->provideFilter(CommonFilter::class);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Forms;
 
-use App\Enums\UserStatus;
+use App\Enums\CommonStatus;
 use App\Interfaces\ResourceForm;
 use App\Models\Currency;
 use App\Models\Language;
@@ -26,7 +26,7 @@ class UsersForm implements ResourceForm
             'password'    => [...$s, 'nullable', 'string', 'min:1', 'max:255'],
             'language_id' => [...$s, 'nullable', 'numeric', 'exists:' . Language::class . ',id'],
             'currency_id' => [...$s, 'nullable', 'numeric', 'exists:' . Currency::class . ',id'],
-            'status'      => [...$s, 'required', 'numeric', new Enum(UserStatus::class)],
+            'status'      => [...$s, 'required', 'numeric', new Enum(CommonStatus::class)],
 //            'superuser'   => [...$s, 'nullable', 'boolean'],
         ];
     }

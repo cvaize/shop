@@ -3,10 +3,10 @@
 /** @var string $name */
 ?>
 <td>
-    <a href="#modal-list-{{ $item->getKey() }}-edit" class="link-reset">
+    <a href="{{ route('admin.users.edit', $item) }}" class="link-reset">
         @switch($name)
             @case('id'){{ $item->getKey() }}@break
-            @case('status'){{ __('users.status.' . $item->status) }}@break
+            @case('status'){{ __('status.' . $item->status) }}@break
             @case('name'){{ $item->name }}@break
             @case('email'){{ $item->email }}@break
             @case('email_verified_at'){{ $item->email_verified_at?->format('d/m/Y H:i:s') }}@break

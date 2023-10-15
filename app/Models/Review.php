@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Interfaces\ResourceModel;
+use App\ModelFilters\CommonFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,9 +32,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserName($value)
  * @mixin \Eloquent
  */
-class Review extends Model
+class Review extends Model implements ResourceModel
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'comment',
@@ -40,4 +43,9 @@ class Review extends Model
         'user_id',
         'user_name',
     ];
+
+    public function modelFilter(): ?string
+    {
+        return $this->provideFilter(CommonFilter::class);
+    }
 }

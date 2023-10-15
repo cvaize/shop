@@ -4,10 +4,10 @@ namespace App\Enums;
 
 use App\Traits\EnumToArray;
 
-enum LanguageStatus: int
+enum CommonStatus: int
 {
     use EnumToArray;
 
-    case Active = 1;
+    case Enable = 1;
     case Disabled = 0;
 }

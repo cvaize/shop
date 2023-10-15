@@ -133,6 +133,9 @@
             <a href="{{ route('admin.users.index') }}" class="btn btn-link" style="border-color: transparent;">
                 Пользователи
             </a>
+            <a href="{{ route('admin.products.index') }}" class="btn btn-link" style="border-color: transparent;">
+                Товары
+            </a>
             <a href="{{ route('admin.currencies.index') }}" class="btn btn-link" style="border-color: transparent;">
                 Валюты
             </a>

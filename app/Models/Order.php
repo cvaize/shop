@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Interfaces\ResourceModel;
+use App\ModelFilters\CommonFilter;
+use EloquentFilter\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,9 +52,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
  * @mixin \Eloquent
  */
-class Order extends Model
+class Order extends Model implements ResourceModel
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'cdate',
@@ -70,4 +73,9 @@ class Order extends Model
         'status_payment',
         'user_id',
     ];
+
+    public function modelFilter(): ?string
+    {
+        return $this->provideFilter(CommonFilter::class);
+    }
 }

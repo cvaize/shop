@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
-class LanguageController extends ResourceController
+class LanguagesController extends ResourceController
 {
     protected function getModel(): ResourceModel|Model
     {

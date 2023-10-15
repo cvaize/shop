@@ -2,55 +2,43 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\CommonStatus;
 use App\Http\Controllers\ResourceController;
-use App\Http\Forms\UsersForm;
+use App\Http\Forms\ProductsForm;
 use App\Interfaces\ResourceForm;
 use App\Interfaces\ResourceModel;
-use App\Models\Currency;
-use App\Models\Language;
-use App\Models\User;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 
-class UsersController extends ResourceController
+class ProductsController extends ResourceController
 {
     protected function getModel(): ResourceModel|Model
     {
-        $user = (new User());
-        $user->with(['currency', 'language']);
-        return $user;
+        return new Product();
     }
 
     protected function getForm(Request $request, Model|ResourceModel $item): ResourceForm
     {
-        return new UsersForm($request, $item);
-    }
-
-    protected function loadRelationship(Request $request, array $data): array
-    {
-        $data['languages'] = Language::where('status', CommonStatus::Enable->value)->get();
-        $data['currencies'] = Currency::where('status', CommonStatus::Enable->value)->get();
-        return $data;
+        return new ProductsForm($request, $item);
     }
 
     protected function getPageDir(): string
     {
-        return 'Html::admin.pages.users';
+        return 'Html::admin.pages.products';
     }
 
     protected function getIndexSeo(Request $request): SEOData
     {
         return new SEOData(
-            title: 'Пользователи'
+            title: 'Товары'
         );
     }
 
     protected function getCreateSeo(Request $request): SEOData
     {
         return new SEOData(
-            title: 'Создание пользователя'
+            title: 'Создание товара'
         );
     }
 
@@ -62,41 +50,41 @@ class UsersController extends ResourceController
     protected function getShowSeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
-            title: 'Пользователь "' . $item->email . '"'
+            title: 'Товар "' . $item->code . '"'
         );
     }
 
     protected function getEditSeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
-            title: 'Редактирование пользователя "' . $item->email . '"'
+            title: 'Редактирование товара "' . $item->code . '"'
         );
     }
 
     protected function getCopySeo(Request $request, ResourceModel|Model $item): SEOData
     {
         return new SEOData(
-            title: 'Копирование пользователя "' . $item->email . '"'
+            title: 'Копирование товара "' . $item->code . '"'
         );
     }
 
     protected function getCreateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        return 'Создан пользователь #' . $item->getKey() . ' ' . $item->email;
+        return 'Создан товар #' . $item->getKey() . ' ' . $item->code;
     }
 
     protected function getUpdateSuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        return 'Обновлен пользователь #' . $item->getKey() . ' ' . $item->email;
+        return 'Обновлен товар #' . $item->getKey() . ' ' . $item->code;
     }
 
     protected function getDestroySuccessMessage(Request $request, ResourceModel|Model $item): string
     {
-        return 'Удален пользователь #' . $item->getKey() . ' ' . $item->email;
+        return 'Удален товар #' . $item->getKey() . ' ' . $item->code;
     }
 
     protected function getSelectedDestroySuccessMessage(Request $request, array $ids): string
     {
-        return 'Удалены пользователи #' . implode(', ', $ids);
+        return 'Удалены товары #' . implode(', ', $ids);
     }
 }
