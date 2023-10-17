@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('relationships', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedInteger('type_id');
             $table->string('parent_type');
             $table->unsignedBigInteger('parent_id');
             $table->string('relationship_type');
@@ -24,9 +24,6 @@ return new class extends Migration
 
             $table->index(['parent_type', 'parent_id', 'relationship_type', 'relationship_id'], 'relationships_index_1');
             $table->unique(['parent_type', 'parent_id', 'type_id', 'relationship_type', 'relationship_id'], 'relationships_unique_1');
-
-            $table->foreign('type_id')->references('id')->on('types')
-                ->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 

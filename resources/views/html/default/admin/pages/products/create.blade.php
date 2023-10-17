@@ -6,7 +6,7 @@
             <a href="{{ route('admin.index') }}">Панель</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('admin.products.index') }}">Пользователи</a>
+            <a href="{{ route('admin.products.index') }}">Товары</a>
         </li>
         <li class="breadcrumb-item">
             <a href="{{ route('admin.products.create') }}">Создание</a>

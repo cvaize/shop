@@ -7,7 +7,7 @@
         @switch($name)
             @case('id'){{ $item->getKey() }}@break
             @case('status'){{ __('status.' . $item->status) }}@break
-            @case('type_id'){{ $item->type?->label }}@break
+            @case('type_id'){{ __('product.type_id.' . $item->type_id) }}@break
             @case('code'){{ $item->code }}@break
             @case('slug'){{ $item->slug }}@break
             @case('created_at'){{ $item->created_at?->format('d/m/Y H:i:s') }}@break

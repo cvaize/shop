@@ -15,7 +15,9 @@ class ProductsController extends ResourceController
 {
     protected function getModel(): ResourceModel|Model
     {
-        return new Product();
+        $product = (new Product());
+        $product->with(['parent']);
+        return $product;
     }
 
     protected function getForm(Request $request, Model|ResourceModel $item): ResourceForm

@@ -9,10 +9,10 @@
             <a href="{{ route('admin.index') }}">Панель</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('admin.products.index') }}">Пользователи</a>
+            <a href="{{ route('admin.products.index') }}">Товары</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('admin.products.copy', $item) }}">Копирование пользователя "{{ $item->email }}"</a>
+            <a href="{{ route('admin.products.copy', $item) }}">Копирование товара "{{ $item->code }}"</a>
         </li>
     </ul>
 @endsection

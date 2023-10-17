@@ -1,7 +1,6 @@
 <?php
 /** @var \Illuminate\Database\Eloquent\Collection $items */
 /** @var \Illuminate\Database\Eloquent\Collection $currencies */
-/** @var \Illuminate\Database\Eloquent\Collection $types */
 /** @var array $frd */
 /** @var array $seo */
 $seo = $seo ?? [];
@@ -18,9 +17,9 @@ $fields = [
         ]
     ],
     'type_id'       => [
-        'operator' => '==', 'active' => false, 'type' => 'select', 'label' => 'Тип', 'options' => [
+        'operator' => '==', 'active' => true, 'type' => 'select', 'label' => 'Тип', 'options' => [
             '' => 'Все',
-            ...$types->pluck('label', 'id')->toArray()
+            ...array_map(fn($typeId) => __('product.type_id.' . $typeId), \App\Enums\ProductType::values())
         ]
     ],
     'code'              => [

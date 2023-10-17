@@ -1,4 +1,10 @@
 {
     "status.0": "Отключен",
-    "status.1": "Включен"
+    "status.1": "Включен",
+    "product.type_id.1": "Default",
+    "product.type_id.2": "Bundle",
+    "product.type_id.3": "Event",
+    "product.type_id.4": "Group",
+    "product.type_id.5": "Select",
+    "product.type_id.6": "Voucher"
 }

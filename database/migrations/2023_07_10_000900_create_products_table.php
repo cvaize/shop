@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedSmallInteger('status')->default(1);
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedInteger('type_id');
             $table->string('slug');
             $table->string('code');
             $table->json('config')->nullable();
@@ -29,8 +29,6 @@ return new class extends Migration
             $table->unique(['slug']);
             $table->unique(['code']);
 
-            $table->foreign('type_id')->references('id')->on('types')
-                ->cascadeOnUpdate()->restrictOnDelete();
             $table->foreign('parent_id')->references('id')->on('products')
                 ->cascadeOnUpdate()->cascadeOnDelete();
         });

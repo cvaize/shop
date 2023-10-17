@@ -191,6 +191,8 @@ return [
         'status'        => 'Статус',
         'currency_id'   => 'Валюта',
         'language_id'   => 'Язык',
+        'type_id'       => 'Тип',
+        'slug'          => 'Slug',
     ],
 
 ];

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('domain_id');
+            $table->unsignedInteger('domain_id');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedSmallInteger('status')->default(1);
             $table->string('slug');
@@ -23,8 +23,6 @@ return new class extends Migration
 
             $table->foreign('parent_id')->references('id')->on('categories')
                 ->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('domain_id')->references('id')->on('domains')
-                ->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 

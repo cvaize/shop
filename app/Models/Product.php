@@ -66,11 +66,6 @@ class Product extends Model implements ResourceModel
         'type_id',
     ];
 
-    public function type(): BelongsTo
-    {
-        return $this->belongsTo(Type::class);
-    }
-
     public function parent(): BelongsTo
     {
         return $this->belongsTo(static::class, 'parent_id');
