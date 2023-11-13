@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
+use Eloquent;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Locale
@@ -17,20 +20,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $pos
  * @property int $status
  * @property int $default
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Locale newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Locale newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Locale query()
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereDefault($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereLanguageId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale wherePos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Locale whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Locale newModelQuery()
+ * @method static Builder|Locale newQuery()
+ * @method static Builder|Locale query()
+ * @method static Builder|Locale whereCreatedAt($value)
+ * @method static Builder|Locale whereCurrencyId($value)
+ * @method static Builder|Locale whereDefault($value)
+ * @method static Builder|Locale whereId($value)
+ * @method static Builder|Locale whereLanguageId($value)
+ * @method static Builder|Locale wherePos($value)
+ * @method static Builder|Locale whereStatus($value)
+ * @method static Builder|Locale whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Locale extends Model implements ResourceModel
 {

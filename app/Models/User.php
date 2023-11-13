@@ -120,4 +120,13 @@ class User extends Authenticatable implements ResourceModel
     {
         return $this->provideFilter(CommonFilter::class);
     }
+
+    public function scopeSearch(Builder $builder, ?string $search)
+    {
+        $builder->where(function (Builder $builder) use ($search){
+            $builder->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        });
+        return $builder;
+    }
 }

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
+use Eloquent;
 use EloquentFilter\Filterable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Category
@@ -16,19 +19,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $parent_id
  * @property int $status
  * @property string $slug
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Category query()
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereDomainId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereParentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Category newModelQuery()
+ * @method static Builder|Category newQuery()
+ * @method static Builder|Category query()
+ * @method static Builder|Category whereCreatedAt($value)
+ * @method static Builder|Category whereDomainId($value)
+ * @method static Builder|Category whereId($value)
+ * @method static Builder|Category whereParentId($value)
+ * @method static Builder|Category whereSlug($value)
+ * @method static Builder|Category whereStatus($value)
+ * @method static Builder|Category whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Category extends Model implements ResourceModel
 {

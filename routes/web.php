@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CurrenciesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LanguagesController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\ProductsController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::redirect('/', '/admin');
 Route::prefix('/admin')->name('admin.')->group(function () use (&$adminResources) {
     Route::redirect('/', '/admin/dashboard')->name('index');
     Route::get('/dashboard', DashboardController::class)->name('dashboard.index');
+    Route::get('/search', SearchController::class)->name('search.index');
 
     foreach ($adminResources as $name => $class) {
         Route::get("/$name", [$class, 'index'])->name("$name.index");

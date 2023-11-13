@@ -144,13 +144,13 @@
             </a>
         </section>
         <section class="navbar-section">
-            <div class="input-group input-inline">
-                <input class="form-input" type="text" placeholder="Не работающий поиск"
+            <form action="{{ route('admin.search.index') }}" method="GET" class="input-group input-inline">
+                <input class="form-input" type="text" placeholder="Поиск" name="search"
                        value="{{ $frd['search'] ?? '' }}">
-                <button class="btn btn-primary input-group-btn">
+                <button type="submit" class="btn btn-primary input-group-btn">
                     <i class="icon icon-search"></i>
                 </button>
-            </div>
+            </form>
         </section>
     </header>
     @if(Session::has('success'))
