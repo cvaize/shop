@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Interfaces\ResourceModel;
 use App\ModelFilters\CommonFilter;
+use App\Traits\Searchable;
 use Database\Factories\UserFactory;
 use Eloquent;
 use EloquentFilter\Filterable;
@@ -69,7 +70,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  */
 class User extends Authenticatable implements ResourceModel
 {
-    use HasApiTokens, HasFactory, Notifiable, Filterable;
+    use HasApiTokens, HasFactory, Notifiable, Filterable, Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -121,12 +122,11 @@ class User extends Authenticatable implements ResourceModel
         return $this->provideFilter(CommonFilter::class);
     }
 
-    public function scopeSearch(Builder $builder, ?string $search)
+    protected function searchOnSql(string $search, int $perPage): Collection
     {
-        $builder->where(function (Builder $builder) use ($search){
+        return $this->where(function (Builder $builder) use ($search){
             $builder->where('name', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%');
-        });
-        return $builder;
+        })->limit($perPage)->get();
     }
 }
